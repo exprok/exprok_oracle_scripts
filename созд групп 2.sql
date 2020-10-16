@@ -1,0 +1,18 @@
+create table t_groups2 as select 'strComputer = "kenny.ad.vz" '||chr(10)||chr(13)||
+'Set colAccounts = GetObject("WinNT://" & strComputer & "") '||chr(10)||chr(13)||
+'Set oWshNet = CreateObject("WScript.Network" ) '||chr(10)||chr(13)||
+'sNetBIOSDomain = oWshNet.UserDomain '||chr(10)||chr(13)||
+chr(10)||chr(13)||
+chr(10)||chr(13)||
+'Set objUser = colAccounts.Create("group","'||t.group_name||'")'||chr(10)||chr(13)||
+chr(10)||chr(13)||
+'objUser.SetInfo'||chr(10)||chr(13)||
+chr(10)||chr(13)||
+'Set oGroup = GetObject("WinNT://" & strComputer & "/'||t.group_name||',group" )'||chr(10)||chr(13)||
+chr(10)||chr(13)||
+'Set oUser = GetObject("WinNT://AD/" & "'||t.group_name||'" & ",group" )'||chr(10)||chr(13)||
+chr(10)||chr(13)||
+'On Error Resume Next '||chr(10)||chr(13)||
+'oGroup.Add(oUser.ADsPath)'||chr(10)||chr(13)||
+ 'On Error Goto 0'||chr(10)||chr(13) name
+from t_groups t

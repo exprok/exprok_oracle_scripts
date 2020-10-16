@@ -1,0 +1,7 @@
+--!!! это НЕ debugger_pes 
+-- это стенд ВНУТРЕННЕГО тестирования (Сигма)
+
+
+system	ajhnjxrf
+cp_pes	pesss
+buh	buh

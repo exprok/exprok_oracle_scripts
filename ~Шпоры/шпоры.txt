@@ -1,0 +1,38 @@
+передача через архив по ssh
+
+tar -cvzf -  ./d1/  |ssh prok@istest1 "tar -xzvf - -C ~/ND/"
+
+
+поменять все строчки 222 на 333 рекурсивно из тек каталога
+
+find ./ -type f  -exec sed 's/222/333/g'  {} -i.bak2 \;
+
+
+Пожалуйста, запомните логин 294486 и пароль 2467. 
+
+
+parted -s /dev/xvdf -- unit b mklabel msdos mkpart primary 2097152 100% print
+
+alter diskgroup DATA add disk 'ORCL:DATA04' rebalance power 0 nowait;
+alter diskgroup DATA add disk 'ORCL:DATA05' rebalance power 0 nowait;
+alter diskgroup DATA add disk 'ORCL:DATA06' rebalance power 0 nowait;
+alter diskgroup DATA add disk 'ORCL:DATA07' rebalance power 0 nowait;
+alter diskgroup DATA add disk 'ORCL:DATA08' rebalance power 0 nowait;
+alter diskgroup DATA drop disk DATA09 rebalance power 0 nowait;
+
+
+
+проверка rest
+curl -H "Content-Type: application/json" -X POST -d '{"accountNumber":"009\\00403310"}' http://isuapp.fast.pesc.ru/ikus-rest-service/ikus/account/address
+curl -H "Content-Type: application/json" -X POST -d '{"accountNumber": "2313147"}' http://is00-scan.buh.pes.spb.ru/pes-ikus-rest-service/ikus/meter/preliminary
+
+
+
+
+tkprof sigma_ora_56196_NSD249040.trc tr1.txt sort=prsela,exeela,fchela
+
+иксы
+yum install  xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-apps -y
+
+
+

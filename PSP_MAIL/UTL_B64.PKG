@@ -1,0 +1,639 @@
+create or replace package utl_b64 authid current_user as
+-- ----------------------------------------------------------------------------
+-- UTL_B64                            Version 1.2.0.008
+--
+-- Utility Package for Base64 encoding/decoding
+--
+-- Copyright(c) 2001-2004 by N-Networks
+-- All rights reserved. Written by Bobby Z.
+--
+-- This package relies on Base64 Java class which should already be
+-- loaded into target schema.
+-- ----------------------------------------------------------------------------
+
+subtype vc_arr is PSP_Mail.Strings;
+
+-- encode
+-- generic wrapper around Java class method Base64.encode
+-- given a raw bytes array it returns the string encoded in Base-64
+--
+function encode(encodeThis in raw) return varchar2;
+pragma restrict_references(encode, rnds, wnds, wnps);
+
+-- encode - VARCHAR2 version
+-- given a string it returns the string encoded in Base-64
+--
+function encodev(encodeThis in varchar2) return varchar2;
+pragma restrict_references(encodev, rnds, wnds, wnps);
+
+-- encodeva - varchar array version
+-- given an array of strings it returns another array of strings,
+-- containing original array encoded in Base-64 and CR/LF line break
+-- appended to each encoded line (to conform to Base-64 specification).
+--
+function encodeva(encodeThis in vc_arr) return vc_arr;
+
+-- encode - BLOB version
+-- encodes encodeThis BLOB and returns BLOB with encoded
+-- representation (ready to be sent as email attachment).
+-- Encoded BLOB contains Base-64 encoding of the source BLOB
+-- with 60 Base-64 characters per line followed by CR/LF.
+-- This BLOB is TEMPORARY and should be freed with
+-- DBMS_LOB.FREETEMPORARY when no longer needed.
+--
+function encode(encodeThis in blob) return blob;
+
+-- encode - CLOB version
+-- encodes encodeThis CLOB and returns CLOB with encoded
+-- representation (ready to be sent as email attachment).
+-- Encoded CLOB contains Base-64 encoding of the source CLOB
+-- with 60 Base-64 characters per line followed by CR/LF.
+-- This CLOB is TEMPORARY and should be freed with
+-- DBMS_LOB.FREETEMPORARY when no longer needed.
+--
+function encode(encodeThis in clob) return clob;
+
+-- encode_mime_header
+-- encodes <encodeThis> string so that it can be issued in
+-- MIME header (according to RFC-2047). English strings
+-- need not be encoded this way, but strings with national
+-- characters should be encoded. Function correctly breaks
+-- long strings so that resulting encoded string does not
+-- have lines longer than 76 characters.
+-- <encoding> should be valid IANA character set identifier.
+--
+-- If auto_translate is set, the function will attempt to
+-- translate encodeThis into specified character set. This will
+-- only work on Oracle8i 8.1.7.4 with UTL_GDK installed, and
+-- Oracle9i and later. If the function will be unable to
+-- obtain proper Oracle character set name automatically,
+-- no translation will be performed. Default value for this
+-- argument emulates previous behavior of the function - no
+-- automatic charset translation.
+--
+function encode_mime_header
+(
+    encodeThis     in varchar2
+   ,encoding       in varchar2
+   ,auto_translate boolean := false
+) return varchar2;
+
+-- decode
+-- generic wrapper around Java class method Base64.decode()
+-- given a string in Base64 encoding it returns decoded raw byte array
+--
+function decode(decodeThis in varchar2) return raw;
+
+-- decode - VARCHAR2 version
+-- given a string in Base64 encoding it returns decoded string
+--
+function decodev(decodeThis in varchar2) return varchar2;
+
+-- decode - CLOB version
+-- decodes decodeThis CLOB and returns CLOB with decoded
+-- data. Function expects that decodeThis CLOB contains
+-- valid Base64-encoded data (with no more than 76 Base64
+-- characters per line and CR/LF as line terminator).
+-- Returned CLOB is TEMPORARY and should be freed with
+-- DBMS_LOB.FREETEMPORARY when no longer needed.
+--
+function decode(decodeThis in clob) return clob;
+
+-- decode - BLOB version
+-- decodes decodeThis BLOB and returns BLOB with decoded
+-- data. Function expects that decodeThis BLOB contains
+-- valid Base64-encoded data (with no more than 76 Base64
+-- characters per line and CR/LF as line terminator).
+-- Returned BLOB is TEMPORARY and should be freed with
+-- DBMS_LOB.FREETEMPORARY when no longer needed.
+--
+function decode(decodeThis in blob) return blob;
+
+-- getVersion
+-- returns version of the package.
+--
+function getVersion return varchar2;
+pragma restrict_references(getVersion, rnds, rnps, wnds, wnps);
+
+end UTL_B64; -- package specification
+/
+create or replace package body utl_b64 as
+-- ----------------------------------------------------------------------------
+-- UTL_B64                            Version 1.2.0.008
+--
+-- Utility Package for Base64 encoding/decoding
+--
+-- Copyright(c) 2001-2004 by N-Networks
+-- All rights reserved. Written by Bobby Z.
+--
+-- This package relies on Base64 Java class which should already be
+-- loaded into target schema.
+--
+-- History:
+--
+-- v1.0   Initially created
+-- v1.1   Added decoding routines and MIME header encoding routine
+--        Optimized LOB encoding - added LOB write buffering and changed
+--         all LOB arguments from IN OUT to IN to enable using encoding and
+--         decoding functions in SQL.
+-- v1.11  Improved LOB encoding speed by buffering LOB input and reducing
+--         number of DBMS_LOB.SUBSTR() calls significantly
+--        Increased encoded LOB line length to 57 source bytes (76 base64
+--         chars + CR/LF)
+-- v1.2.0 Added automatic charset translation in encode_mime_header on
+--         database versions that expose UTL_GDK/UTL_I18N package. The new
+--         autotranslation is controlled by new boolean argument to the
+--         function, which defaults to false thus keeping existing code
+--         compatible with this new feature.
+-- ----------------------------------------------------------------------------
+
+function encode(encodeThis in raw) return varchar2
+-- PL/SQL wrapper for Base64.encode()
+ is
+    language java name 'Base64.encode( byte[] ) return java.lang.String';
+
+--============================================================================
+
+function encodev(encodeThis in varchar2) return varchar2
+-- encode Varchar2
+ is
+begin
+    return encode(utl_raw.cast_to_raw(encodeThis));
+end encodev;
+
+--============================================================================
+
+function encodeva(encodeThis in vc_arr) return vc_arr
+-- encode Varchar2 Array
+ is
+    tl      clob; -- temp CLOB
+    el      clob; -- encoded CLOB
+    cp      pls_integer := 1; -- current position in LOB
+    rv      vc_arr;
+    lob_len pls_integer;
+    wrbuf   varchar2(32767) := NULL;
+
+    procedure flush
+    -- flush write buffer to LOB
+     is
+    begin
+        if wrbuf is not NULL then
+            dbms_lob.writeAppend(tl, length(wrbuf), wrbuf);
+            wrbuf := NULL;
+        end if;
+    end flush;
+
+    procedure wa(what in varchar2)
+    -- buffered writeAppend
+     is
+    begin
+        if nvl(length(wrbuf), 0) + nvl(length(what), 0) > 32767 then
+            flush;
+            wrbuf := what;
+        else
+            wrbuf := wrbuf || what;
+        end if;
+    end wa;
+
+begin
+    dbms_lob.createTemporary(tl, true);
+    dbms_lob.open(tl, dbms_lob.lob_ReadWrite);
+    -- convert array to CLOB
+    declare
+        i pls_integer := encodeThis.first;
+    begin
+        while i is not NULL loop
+            wa(encodeThis(i));
+            i := encodeThis.next(i);
+        end loop;
+        flush;
+    end;
+    -- encode temporary CLOB, output will contain 76 Base64 characters per line
+    -- plus CR/LF, totalling in 78 characters per line
+    el := encode(tl);
+
+    -- close and dispose temporary CLOB as it is no longer needed
+    dbms_lob.close(tl);
+    dbms_lob.freeTemporary(tl);
+
+    lob_len := dbms_lob.getLength(el);
+
+    if dbms_lob.ISOPEN(el) = 0 then
+        -- ensure the encoded CLOB is open
+        dbms_lob.open(el, dbms_lob.lob_ReadWrite);
+    end if;
+
+    while cp < lob_len loop
+        -- read next encoded line into next array element
+        rv(nvl(rv.last + 1, 1)) := dbms_lob.substr(el, 78, cp);
+        -- advance position in CLOB by number of bytes read
+        cp := cp + 78;
+    end loop;
+    dbms_lob.close(el);
+    dbms_lob.freeTemporary(el);
+    return rv;
+end encodeva;
+
+--============================================================================
+
+function encode(encodeThis in blob) return blob
+-- encode BLOB
+ is
+    temp     blob; -- encoded BLOB
+    l_pos    pls_integer := 1; -- source BLOB position
+    bufLen   pls_integer; -- encoding buffer length
+    rdBufLen pls_integer; -- read buffer length
+    wrbuf    raw(32767) := NULL; -- write buffer
+    rdbuf    raw(32000) := NULL; -- read buffer
+    lob_len  pls_integer; -- source BLOB length
+
+    procedure flush
+    -- flush write buffer to target BLOB
+     is
+    begin
+        if utl_raw.length(wrbuf) > 0 then
+            dbms_lob.writeAppend(temp, utl_raw.length(wrbuf), wrbuf);
+            wrbuf := NULL;
+        end if;
+    end flush;
+
+    procedure wa(what in raw)
+    -- buffered writeAppend
+     is
+    begin
+        if utl_raw.length(wrbuf) + utl_raw.length(what) > 32767 then
+            flush;
+            wrbuf := what;
+        else
+            wrbuf := utl_raw.concat(wrbuf, what);
+        end if;
+    end wa;
+
+begin
+
+    if encodeThis is NULL then
+        return NULL;
+    end if;
+
+    lob_len := dbms_lob.getLength(encodeThis);
+
+    -- create a temporary BLOB to hold result
+    dbms_lob.createTemporary(temp, true);
+    dbms_lob.open(temp, dbms_lob.lob_ReadWrite);
+
+    <<outer_loop>>
+    while l_pos < lob_len loop
+    
+        -- get next LOB chunk into read buffer (chunk size evenly divisible by 57)
+        rdbuf := dbms_lob.substr(encodeThis, 31977, l_pos);
+        -- advance position in LOB
+        l_pos := l_pos + 31977;
+        -- reset encode buffer size
+        bufLen := 57;
+        -- get read buffer size
+        rdBufLen := utl_raw.length(rdbuf);
+    
+        <<inner_loop>>
+        while rdBufLen > 0 loop
+            -- adjust encoding buffer size
+            if rdBufLen < 57 then
+                bufLen := rdBufLen;
+            end if;
+            wa(utl_raw.concat(utl_raw.cast_to_raw(encode(utl_raw.substr(rdbuf
+                                                                       ,1
+                                                                       ,bufLen)))
+                             ,hextoraw('0D0A')));
+            -- strip this chunk from the head of read buffer
+            if rdBufLen > bufLen then
+                rdbuf := utl_raw.substr(rdbuf, bufLen + 1);
+            else
+                rdbuf := NULL;
+            end if;
+            -- get new read buffer length
+            rdBufLen := utl_raw.length(rdbuf);
+            -- encode the input buffer and append encoded representation 
+        -- to the output LOB, followed by CR/LF
+        end loop inner_loop;
+    
+    end loop outer_loop;
+
+    flush;
+
+    return temp;
+
+end encode;
+
+--============================================================================
+
+function encode(encodeThis in clob) return clob
+-- encode CLOB
+ is
+    temp    clob; -- encoded CLOB
+    l_pos   pls_integer := 1; -- source LOB position
+    rdbuf   varchar2(32000) := NULL; -- read buffer
+    wrbuf   varchar2(32767) := NULL; -- write buffer
+    lob_len pls_integer; -- source LOB length
+
+    procedure flush
+    -- flush write buffer to LOB
+     is
+    begin
+        if wrbuf is not NULL then
+            dbms_lob.writeAppend(temp, length(wrbuf), wrbuf);
+            wrbuf := NULL;
+        end if;
+    end flush;
+
+    procedure wa(what in varchar2)
+    -- buffered writeAppend
+     is
+    begin
+        if nvl(length(wrbuf), 0) + nvl(length(what), 0) > 32767 then
+            flush;
+            wrbuf := what;
+        else
+            wrbuf := wrbuf || what;
+        end if;
+    end wa;
+
+begin
+    if encodeThis is NULL then
+        return NULL;
+    end if;
+    lob_len := dbms_lob.getLength(encodeThis);
+    dbms_lob.createTemporary(temp, true);
+    dbms_lob.open(temp, dbms_lob.lob_ReadWrite);
+    <<outer_loop>>
+    while l_pos < lob_len loop
+        rdbuf := dbms_lob.substr(encodeThis, 31977, l_pos);
+        l_pos := l_pos + 31977;
+        <<inner_loop>>
+        while rdbuf is not NULL loop
+            wa(encodev(substr(rdbuf, 1, 57)) || chr(13) || chr(10));
+            rdbuf := substr(rdbuf, 58);
+        end loop inner_loop;
+    end loop outer_loop;
+    flush;
+    return temp;
+end encode;
+
+--============================================================================
+
+function decode(decodeThis in varchar2) return raw
+-- PL/SQL wrapper for Base64.decode()
+ is
+    language java name 'Base64.decode(java.lang.String) return byte[]';
+
+--============================================================================
+
+function decodev(decodeThis in varchar2) return varchar2
+-- decode Varchar2
+ is
+begin
+    return utl_raw.cast_to_varchar2(decode(decodeThis));
+end decodev;
+
+--============================================================================
+
+function hasLineBreak(S in varchar2) return boolean
+-- checks if S has line break characters
+ is
+begin
+    return instr(S, chr(13)) > 0 or instr(S, chr(10)) > 0;
+end hasLineBreak;
+
+--============================================================================
+
+function decode(decodeThis in blob) return blob
+-- decode BLOB
+ is
+    bufIn   varchar2(80);
+    temp    blob;
+    pos     pls_integer := 1;
+    bufLen  pls_integer := 80;
+    lbPos   pls_integer;
+    lob_len pls_integer;
+    wrbuf   raw(32767);
+
+    procedure flush
+    -- flush write buffer into the output BLOB
+     is
+    begin
+        if utl_raw.length(wrbuf) > 0 then
+            dbms_lob.writeAppend(temp, utl_raw.length(wrbuf), wrbuf);
+            wrbuf := NULL;
+        end if;
+    end flush;
+
+    procedure wa(what in raw)
+    -- buffered writeAppend
+     is
+    begin
+        if utl_raw.length(wrbuf) + utl_raw.length(what) > 32767 then
+            flush;
+            wrbuf := what;
+        else
+            wrbuf := utl_raw.concat(wrbuf, what);
+        end if;
+    end wa;
+
+begin
+    if decodeThis is NULL then
+        return NULL;
+    end if;
+    lob_len := dbms_lob.getLength(decodeThis);
+
+    dbms_lob.createTemporary(temp, true);
+    dbms_lob.open(temp, dbms_lob.lob_ReadWrite);
+
+    while pos < lob_len loop
+        bufIn := utl_raw.cast_to_varchar2(dbms_lob.substr(decodeThis, 80, pos));
+        if not hasLineBreak(bufIn) then
+            -- invalid input data, each Base64-encoded line should
+            -- have no more than 76 characters before a line break
+            dbms_lob.freetemporary(temp);
+            return NULL;
+        end if;
+        -- find the line break;
+        lbPos := instr(bufIn, chr(13));
+        if instr(bufIn, chr(10)) < lbPos then
+            lbPos := instr(bufIn, chr(10));
+        end if;
+        -- cut the data up to the line break
+        bufLen := lbPos;
+        while substr(bufIn, bufLen, 1) in (chr(10), chr(13)) loop
+            bufLen := bufLen + 1;
+        end loop;
+        bufIn := substr(bufIn, 1, lbPos - 1);
+        pos   := pos + bufLen - 1;
+        wa(decode(bufIn));
+    end loop;
+    flush;
+
+    return temp;
+end decode;
+
+--============================================================================
+
+function decode(decodeThis in clob) return clob
+-- decode CLOB
+ is
+    bufIn   varchar2(80);
+    temp    clob;
+    pos     pls_integer := 1;
+    bufLen  pls_integer := 80;
+    lbPos   pls_integer;
+    wrbuf   varchar2(32767);
+    lob_len pls_integer;
+
+    procedure flush
+    -- flush write buffer to output LOB
+     is
+    begin
+        if wrbuf is not NULL then
+            dbms_lob.writeAppend(temp, length(wrbuf), wrbuf);
+            wrbuf := NULL;
+        end if;
+    end flush;
+
+    procedure wa(what in varchar2)
+    -- buffered writeAppend
+     is
+    begin
+        if nvl(length(wrbuf), 0) + nvl(length(what), 0) > 32767 then
+            flush;
+            wrbuf := what;
+        else
+            wrbuf := wrbuf || what;
+        end if;
+    end wa;
+
+begin
+    if decodeThis is NULL then
+        return NULL;
+    end if;
+    lob_len := dbms_lob.getLength(decodeThis);
+
+    dbms_lob.createTemporary(temp, true);
+    dbms_lob.open(temp, dbms_lob.lob_readwrite);
+
+    while pos < lob_len loop
+        bufIn := dbms_lob.substr(decodeThis, 80, pos);
+        if not hasLineBreak(bufIn) then
+            -- invalid input data, each Base64-encoded line should
+            -- have no more than 76 characters before a line break
+            dbms_lob.freetemporary(temp);
+            return NULL;
+        end if;
+        -- find the line break;
+        lbPos := instr(bufIn, chr(13));
+        if instr(bufIn, chr(10)) < lbPos then
+            lbPos := instr(bufIn, chr(10));
+        end if;
+        bufLen := lbPos;
+        while substr(bufIn, bufLen, 1) in (chr(10), chr(13)) loop
+            bufLen := bufLen + 1;
+        end loop;
+        -- cut the data up to the line break
+        bufIn := substr(bufIn, 1, lbPos - 1);
+        pos   := pos + bufLen - 1;
+        wa(decodev(bufIn));
+    end loop;
+
+    return temp;
+end decode;
+
+--============================================================================
+
+function getOracleCharsetName(iana_cs_name in varchar2) return varchar2 is
+
+    dbv number;
+    rv  varchar2(100);
+
+    function db_version return number
+    -- returns database version as number. For example, 8.1.7.3.0 would be
+        -- returned as 81730.
+     is
+        v varchar2(20);
+        c varchar2(20);
+    begin
+        dbms_utility.db_version(v, c);
+        -- remove all dots from version string
+        c := replace(v, '.');
+        -- return resulting number
+        return to_number(c);
+    exception
+        when OTHERS then
+            -- if anything went wrong, return 0
+            return 0;
+    end db_version;
+
+begin
+
+    dbv := db_version;
+
+    if dbv < 8174 then
+        return NULL;
+    end if; -- UTL_GDK/UTL_I18N are not supported there
+
+    if dbv >= 101000 then
+        -- in 10g, the package is named UTL_I18N
+        execute immediate 'begin :1 := utl_i18n.map_charset(:2, utl_i18n.generic_context, utl_i18n.iana_to_oracle); end;'
+            using out rv, in iana_cs_name;
+    else
+        -- in pre-10g, it's UTL_GDK and exposes different prototypes
+        execute immediate 'begin :1 := utl_gdk.charset_map(:2, utl_gdk.iana_to_oracle); end;'
+            using out rv, in iana_cs_name;
+    end if;
+
+    return rv;
+
+exception
+    when OTHERS then
+        return NULL; -- assume there's no package we need or there was some other error
+
+end getOracleCharsetName;
+
+--============================================================================
+
+function encode_mime_header
+(
+    encodeThis     in varchar2
+   ,encoding       in varchar2
+   ,auto_translate boolean := false
+) return varchar2 is
+    rv     varchar2(32000) := NULL; -- return value
+    cpl    pls_integer := TRUNC((68 - length('=?' || encoding || '?B??=')) / 4 * 3); -- number of characters to encode on each line
+    cp     pls_integer := 1; -- current source position
+    trcs   varchar2(100) := getOracleCharsetName(encoding);
+    encstr varchar2(32000) := encodeThis;
+begin
+    if encodeThis is NULL then
+        return NULL;
+    end if;
+    if auto_translate and (trcs is not NULL) then
+        encstr := convert(encodeThis, trcs);
+    end if;
+    while cp <= length(encstr) loop
+        if rv is not NULL then
+            -- source string spans more than one encoded line
+            rv := rv || chr(13) || chr(10) || chr(9);
+        end if;
+        rv := rv || '=?' || encoding || '?B?' || encodev(substr(encstr, cp, cpl)) || '?=';
+        cp := cp + cpl;
+    end loop;
+    return rv;
+end encode_mime_header;
+
+--============================================================================
+
+function getVersion return varchar2
+-- returns package version string
+ is
+begin
+    return '1.2.0.008';
+end getVersion;
+
+end UTL_B64; -- package body specification
+/
+sho err

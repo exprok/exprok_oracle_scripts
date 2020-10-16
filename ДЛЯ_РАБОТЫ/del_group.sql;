@@ -1,0 +1,2 @@
+      select 'net localgroup ora_main_'||role||'_d /delete'
+from dba_roles r where r.role like 'R~_%' escape '~';

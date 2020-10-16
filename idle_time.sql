@@ -1,0 +1,1 @@
+select to_date('01.01.1970','dd.mm.yyyy')+ 1160962934/(60*60*24) from dual

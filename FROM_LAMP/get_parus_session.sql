@@ -1,0 +1,3 @@
+select ss.USERNAME,ss.sid,ss.TERMINAL from V$session ss
+where ss.TERMINAL not in ('PINKFOX','PARUS2000','140LAMP','140KOLDOMOV','140KUDINOVA','140SHKLYAEVA','140STAR')
+order by ss.TERMINAL

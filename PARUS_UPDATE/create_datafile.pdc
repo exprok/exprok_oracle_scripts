@@ -1,0 +1,16 @@
+ create smallfile tablespace PARUS datafile 
+  'E:\PARUSW\PARUS_01.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUS_02.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUS_03.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUS_04.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUS_05.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUS_06.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUS_07.DAT' size 1G autoextend on NEXT 5G;
+   create smallfile tablespace PARUS_IND datafile 
+  'E:\PARUSW\PARUSIND_01.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUSIND_02.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUSIND_03.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUSIND_04.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUSIND_05.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUSIND_06.DAT' size 1G autoextend on NEXT 5G,
+  'E:\PARUSW\PARUSIND_07.DAT' size 1G autoextend on NEXT 5G;

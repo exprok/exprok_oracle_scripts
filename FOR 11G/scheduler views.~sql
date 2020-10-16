@@ -1,0 +1,6 @@
+select y.enabled, y.* from dba_scheduler_windows y;
+select y.enabled, y.* from dba_scheduler_programs y;
+select y.* from dba_scheduler_schedules y;
+select y.enabled, y.* from dba_scheduler_jobs y;
+select * from dba_rsrc_plans p;
+select y.* from dba_scheduler_job_classes y;

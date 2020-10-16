@@ -1,0 +1,5 @@
+insert into tb_ad 
+select to_numberguid('0D19F2C32B8F6749AE272D0B00AC1D7E'), p.rn,sysdate,null,'A',null
+from w_kadr.v_person_mp_all p
+where p.tn='111732';
+commit;

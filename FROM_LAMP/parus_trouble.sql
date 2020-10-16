@@ -1,0 +1,1 @@
+select * from parus.v_aa_fcacoperplans t

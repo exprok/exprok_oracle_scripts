@@ -1,0 +1,1 @@
+select owner, round(sum(s.BYTES)/(1024*1024*1024)) size_ from dba_segments s group by s.owner order by sum(s.BYTES) desc

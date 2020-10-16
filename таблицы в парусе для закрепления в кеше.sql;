@@ -1,0 +1,11 @@
+select /*sa.SQL_TEXT, sa.HASH_VALUE,*/ distinct  'alter table parus.'||object_name||' cache;', 'analyze table parus.'||object_name||' compute statistics;'
+  from v$sql_plan p, v$sqlarea sa, dba_tables dt
+ where options like '%FULL%'
+   and p.OPERATION like '%TABLE%'
+   and p.OBJECT_OWNER = 'PARUS'
+   and sa.HASH_VALUE=p.HASH_VALUE
+   and dt.owner=p.OBJECT_OWNER and dt.table_name=p.OBJECT_NAME
+   and dt.blocks<=50
+   and sa.EXECUTIONS>50
+   and (dt.cache not like '%Y%' or dt.cache is null)
+--dba_tables dt,

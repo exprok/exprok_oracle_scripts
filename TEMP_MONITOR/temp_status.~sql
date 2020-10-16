@@ -1,0 +1,8 @@
+SELECT t.tablespace_name,
+       round(t.tablespace_size / (1024 * 1024 * 1024)) size_gb,
+       round(t.free_space / (1024 * 1024 * 1024)) FREE_GB,
+       round(t.free_space*100/tablespace_size) FRR_PCT
+      
+       
+  FROM dba_temp_free_space t
+  

@@ -1,0 +1,10 @@
+SELECT ses.USERNAME, sqla.SQL_TEXT, sqla.EXECUTIONS, ss.SID, SN.NAME, SS.VALUE
+	FROM V$SESSTAT SS, V$STATNAME SN, v$session ses, v$sqlarea sqla, dba_users us
+ WHERE --SS.SID = 102 AND
+    sqla.PARSING_USER_ID=us.user_id AND
+		ses.SQL_ADDRESS=sqla.ADDRESS AND
+	  SS.STATISTIC# = SN.STATISTIC# AND
+	  SN.NAME LIKE '%physical reads%' AND 
+		ss.SID = ses.SID
+		
+		ORDER BY VALUE DESC

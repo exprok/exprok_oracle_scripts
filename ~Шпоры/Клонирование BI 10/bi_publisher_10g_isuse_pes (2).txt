@@ -1,0 +1,82 @@
+#################################################
+### Cloning BI publisher 10g /// ISUSE PES
+#################################################
+
+is3 ---> ovs5s (10.196.5.241)
+
+
+# Copy binaries, etc.
+[root@ovs5s ~]# mkdir -p /u01/app/oracle/product/
+
+[root@istest1 ~]$ rsync -av /u01/app/oracle/product/OracleBI 10.196.5.241:/u01/app/oracle/product/
+[root@istest1 ~]$ rsync -av /u01/app/oracle/product/OracleBIData 10.196.5.241:/u01/app/oracle/product/
+[root@istest1 ~]# scp /etc/init.d/bi_server 10.196.5.241:/etc/init.d/
+
+# Edit configs
+
+as root@ovs5s:
+
+/u01/app/oracle/product/OracleBI/server/Config/NQSConfig.INI
+/u01/app/oracle/product/OracleBI/server/Config/NQClusterConfig.INI
+/u01/app/oracle/product/OracleBI/setup/odbc.ini
+/u01/app/oracle/product/OracleBI/web/app/WEB-INF/web.xml
+/u01/app/oracle/product/OracleBIData/web/config/instanceconfig.xml <<< important
+/u01/app/oracle/product/OracleBI/xmlp/XMLP/Admin/Configuration/xmlp-server-config.xml <<< important
+* replace 
+* <property name="ORACLE_DB_SECURITY_ADMIN_PASSWORD_ENC" value="blahblahblah"/>
+* with
+* <property name="ORACLE_DB_SECURITY_ADMIN_PASSWORD" value="tiger"/>
+******* CHECK ACCURATELY OTHER ARGUMENTS LIKE DB TNS ETC.
+/u01/app/oracle/product/OracleBI/setup/user.sh
+/u01/app/oracle/product/OracleBI/index_bi_ee.html << important 
+/u01/app/oracle/product/OracleBI/xmlp/XMLP/Admin/DataSource/datasources.xml << important
+/u01/app/oracle/product/OracleBI/xmlp/XMLP/Admin/Scheduler/quartz-config.properties
+/u01/app/oracle/product/OracleBI/xmlp/XMLP/Admin/Scheduler/database-config.xml
+
+JNDI: /u01/app/oracle/product/OracleBI/oc4j_bi/j2ee/home/config/data-sources.xml
+
+/u02/app/oracle/product/OracleBI/server/Config/NQSConfig.INI
+/u02/app/oracle/product/OracleBI/server/Config/NQClusterConfig.INI
+/u02/app/oracle/product/OracleBI/setup/odbc.ini
+/u02/app/oracle/product/OracleBI/web/app/WEB-INF/web.xml
+/u02/app/oracle/product/OracleBIData/web/config/instanceconfig.xml <<< important
+/u02/app/oracle/product/OracleBI/xmlp/XMLP/Admin/Configuration/xmlp-server-config.xml <<< important
+/u02/app/oracle/product/OracleBI/setup/user.sh
+/u02/app/oracle/product/OracleBI/index_bi_ee.html << important 
+/u02/app/oracle/product/OracleBI/xmlp/XMLP/Admin/DataSource/datasources.xml << important
+/u02/app/oracle/product/OracleBI/xmlp/XMLP/Admin/Scheduler/quartz-config.properties
+/u02/app/oracle/product/OracleBI/xmlp/XMLP/Admin/Scheduler/database-config.xml
+
+
+[root@ovs5s ~]# chmod +x /etc/init.d/bi_server
+
+[root@ovs5s ~]# ~/run_env.sh "yum install glibc.i686 --nogpgcheck"
+[root@ovs5s ~]# ~/run_env.sh "yum install libstdc++.so.6 --nogpgcheck"
+
+# Sync reports
+
+[root@ovs5s ~]# mv /u01/app/oracle/product/OracleBI/xmlp/XMLP/Reports /u01/app/oracle/product/OracleBI/xmlp/XMLP/Reports_old
+
+[root@is3 ~]# rsync -av /u02/app/oracle/product/OracleBI/xmlp/XMLP/Reports 10.196.5.241:/u01/app/oracle/product/OracleBI/xmlp/XMLP/
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ORA-00904: "FINE_CALC"."GET_ABON_FINE": invalid identifier
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Need public SYNONYMS configured for the same schema as publisher.
+
+
+create or replace public synonym XMLP_COMMON_PKG for TIGER_MIGR1.XMLP_COMMON_PKG;
+create or replace public synonym FINE_CALC for TIGER_MIGR1.FINE_CALC;
+create or replace public synonym DEBTOR_PKG for TIGER_MIGR1.DEBTOR_PKG;
+create or replace public synonym USER_FORM_REPORTS for TIGER_MIGR1.USER_FORM_REPORTS
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ rm -rf /u01/app/oracle/product/OracleBI/oc4j_bi/j2ee/home/persistence/* /u01/app/oracle/product/OracleBI/oc4j_bi/j2ee/home/application-deployments/*/*/persistence/*
+
+
+DB URL:
+jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=dbistest-scan.sigma-it.local)(PORT = 1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=sigma)))
+jdbc\:oracle\:thin\:@(DESCRIPTION\=(ADDRESS\=(PROTOCOL\=TCP)(HOST\=dbistest-scan.sigma-it.local)(PORT\=1521))(CONNECT_DATA\=(SERVER\=DEDICATED)(SERVICE_NAME\=sigma)))

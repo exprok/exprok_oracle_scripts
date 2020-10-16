@@ -1,0 +1,91 @@
+declare
+  unf number;
+  unfb number;
+  fs1 number;
+  fs1b number;
+  fs2 number;
+  fs2b number;
+  fs3 number;
+  fs3b number;
+  fs4 number;
+  fs4b number;
+  full number;
+  fullb number;
+begin
+
+  dbms_output.put_line('TABLE TIGER.CARD_CALC: '||unf);
+dbms_space.space_usage('TIGER','CARD_CALC','TABLE',unf,unfb,fs1,fs1b,fs2,fs2b,fs3,fs3b,fs4,fs4b,full,fullb);
+  dbms_output.put_line('Total number of blocks that are unformatted: '||unf);
+  dbms_output.put_line('Number of blocks that has at least  0 to 25% free space: '||fs1);
+  dbms_output.put_line('Number of blocks that has at least 25 to 50% free space: '||fs2);
+  dbms_output.put_line('Number of blocks that has at least 50 to 75% free space: '||fs3);
+  dbms_output.put_line('Number of blocks that has at least 75 to 100% free space: '||fs4);
+  dbms_output.put_line('Total number of blocks that are full in the segment: '||full);
+
+  dbms_output.put_line('TABLE TIGER.REAL: '||unf);
+dbms_space.space_usage('TIGER','REAL','TABLE',unf,unfb,fs1,fs1b,fs2,fs2b,fs3,fs3b,fs4,fs4b,full,fullb);
+  dbms_output.put_line('Total number of blocks that are unformatted: '||unf);
+  dbms_output.put_line('Number of blocks that has at least  0 to 25% free space: '||fs1);
+  dbms_output.put_line('Number of blocks that has at least 25 to 50% free space: '||fs2);
+  dbms_output.put_line('Number of blocks that has at least 50 to 75% free space: '||fs3);
+  dbms_output.put_line('Number of blocks that has at least 75 to 100% free space: '||fs4);
+  dbms_output.put_line('Total number of blocks that are full in the segment: '||full);
+
+  dbms_output.put_line('TABLE TIGER.SHIP: '||unf);
+dbms_space.space_usage('TIGER','SHIP','TABLE',unf,unfb,fs1,fs1b,fs2,fs2b,fs3,fs3b,fs4,fs4b,full,fullb);
+  dbms_output.put_line('Total number of blocks that are unformatted: '||unf);
+  dbms_output.put_line('Number of blocks that has at least  0 to 25% free space: '||fs1);
+  dbms_output.put_line('Number of blocks that has at least 25 to 50% free space: '||fs2);
+  dbms_output.put_line('Number of blocks that has at least 50 to 75% free space: '||fs3);
+  dbms_output.put_line('Number of blocks that has at least 75 to 100% free space: '||fs4);
+  dbms_output.put_line('Total number of blocks that are full in the segment: '||full);
+
+end;
+
+Output на проме ќмска:
+
+TABLE TIGER.CARD_CALC:
+Total number of blocks that are unformatted: 4048
+Number of blocks that has at least  0 to 25% free space: 79458
+Number of blocks that has at least 25 to 50% free space: 492486
+Number of blocks that has at least 50 to 75% free space: 1485064
+Number of blocks that has at least 75 to 100% free space: 1729998
+Total number of blocks that are full in the segment: 1257318
+TABLE TIGER.REAL: 4048
+Total number of blocks that are unformatted: 1008
+Number of blocks that has at least  0 to 25% free space: 34677
+Number of blocks that has at least 25 to 50% free space: 100116
+Number of blocks that has at least 50 to 75% free space: 411298
+Number of blocks that has at least 75 to 100% free space: 890480
+Total number of blocks that are full in the segment: 367117
+TABLE TIGER.SHIP: 1008
+Total number of blocks that are unformatted: 1272
+Number of blocks that has at least  0 to 25% free space: 33550
+Number of blocks that has at least 25 to 50% free space: 103087
+Number of blocks that has at least 50 to 75% free space: 153664
+Number of blocks that has at least 75 to 100% free space: 3413608
+Total number of blocks that are full in the segment: 680674
+
+ƒл€ сравнени€, только что на isomsk4:
+
+TABLE TIGER.CARD_CALC:
+Total number of blocks that are unformatted: 0
+Number of blocks that has at least  0 to 25% free space: 0
+Number of blocks that has at least 25 to 50% free space: 0
+Number of blocks that has at least 50 to 75% free space: 0
+Number of blocks that has at least 75 to 100% free space: 23
+Total number of blocks that are full in the segment: 2313891
+TABLE TIGER.REAL: 0
+Total number of blocks that are unformatted: 0
+Number of blocks that has at least  0 to 25% free space: 0
+Number of blocks that has at least 25 to 50% free space: 0
+Number of blocks that has at least 50 to 75% free space: 0
+Number of blocks that has at least 75 to 100% free space: 0
+Total number of blocks that are full in the segment: 655913
+TABLE TIGER.SHIP: 0
+Total number of blocks that are unformatted: 0
+Number of blocks that has at least  0 to 25% free space: 0
+Number of blocks that has at least 25 to 50% free space: 0
+Number of blocks that has at least 50 to 75% free space: 0
+Number of blocks that has at least 75 to 100% free space: 0
+Total number of blocks that are full in the segment: 824874

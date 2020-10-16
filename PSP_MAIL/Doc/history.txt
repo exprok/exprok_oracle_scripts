@@ -1,0 +1,496 @@
+... HISTORY.TXT .............................. PSP_Mail Development History ...
+                                    Copyright(c) 2000-2004 by Hit-Media LLC.
+
+Legend:
+
+[!] - bug fixed
+[+] - feature added
+[-] - feature removed
+[*] - miscellaneous/cosmetic change
+
+
+Version 1.4.5.0065 - Release Version
+
+[*] - cleaned up for release.
+[*] - updated UTL_B64 to 1.2.0:
+      - added automatic charset conversion in encode_mime_header
+        on supported Oracle releases. This feature is optional
+        and is controlled by new argument defaulted to false.
+[*] - updated license enforcement package to 1.1.0010:
+      - fixed a bug that could cause license keys to be decoded 
+        incorrectly in rare cases.
+      - increased licensee name length.
+      - added verbal descriptions for all existing error codes in
+        ErrorMessage().
+      - the package no longer requires SELECT privilege on V$SESSION
+        view.
+
+Version 1.4.5.0064
+
+[*] - instrumentation now preserved in release versions to simplify
+      remote debugging/problem resolution.
+[*] - re-included the FAQ.txt file that we forgot to ship in previous
+      release.
+[*] - updated UTL_BinFile to Version 1.0.7
+[!] - sometimes space characters were incorrectly removed from headers
+
+
+Version 1.4.5.0063
+
+[*] - misc internal optimizations.
+
+
+Version 1.4.4.0062 - Release Version
+
+[*] - cleaned up for release.
+
+
+Version 1.4.4.0061
+
+[*] - header folding now does not take place within angle brackets,
+      as this may confuse some MTAs and result in corrupt headers.
+[*] - optimized reqcheck.sql script a bit.
+[*] - updated UTL_BinFile to 1.0.6, with important 9i JDBC driver bug
+      workaround.
+
+
+Version 1.4.3.0060 - Release Version (unreleased)
+
+[*] - cleaned up for release
+
+
+Version 1.4.3.0059 - Release Candidate 1
+
+[!] - fixed Date header generation on pre-9i databases when fractional
+      GMT_DIFF is specified - now correct number of minutes is calculated
+      for UTC offset.
+[+] - PSP_Mail now uses the session time zone on Oracle9i and later
+      for Date header generation. GMT_DIFF is now ignored on 9i+, but 
+      is still used on 8i.
+
+
+Version 1.4.3.0058
+
+[!] - fixed MX lookup not resolving standalone hosts (that is, if recipient
+      is specified as user@host.domain then MX lookup for "host.domain" domain
+      is performed, but no A lookup to check if this is a standalone host is
+      done if MX lookup fails - now additional A lookup is done in case MX
+      lookup fails.)
+
+
+Version 1.4.2.0057 - Release Version
+
+[*] - cleaned up for release
+
+
+Version 1.4.2.0056 - Release Candidate 1
+
+[*] - SMTP Authentication now works automatically with all SendMailXXX versions
+      (SendMail, SendMailEx and SendMailEx2.)
+
+
+Version 1.4.2.0055
+
+[+] - added support for SMTP Authentication extension (RFC-2554). Authentication 
+      methods supported are LOGIN and CRAM-MD5. Added AUTH_USERNAME and
+      AUTH_PASSWORD public variables to the PSP_Mail package - these are used
+      for authentication if not NULL and SMTP server supports authentication.
+      These variables are never reset internally, it is up to the developer to
+      initialize and reset them properly. Both are NULL by default, which
+      causes no authentication to take place.
+[+] - added com.nnetworks.CryptoHash class to the psp_mail.jar - this class is
+      needed for CRAM-MD5 authentication method support. The class implements MD5
+      and SHA-1 secure hash algorithms and HMAC algorithm (RFC-2104).
+[*] - changed versioning to major.minor.release.build style.
+
+
+Version 1.41.0054 - Release Version.
+
+[*] - cleaned up for release.
+
+
+Version 1.41.0053 - Release Candidate 1
+
+[*] - Better error reporting for multiple recipient transactions through the
+      relay server: now rejected recipients are reported through new 511
+      error.
+[+] - While sending to multiple recipients, the package now checks for RCPT
+      command reply code and detects when server's recipient buffer is full.
+      When such reply code is received, the package commits the mail 
+      transaction and starts new transaction for remaining recipients. This
+      change is to comply with RFC-2821 minimum limit of 100 recipients per 
+      transaction (RFC says that the server must accept at least 100 recipients
+      per transaction, but not necessarily more than that, so we need to
+      watch when the server's buffer is full and initiate new transaction. We
+      do not want to break the list in chunks of predefined length though,
+      because the server may accept more than 100 recipients at once and in 
+      this case less transactions may be needed.)
+
+
+Version 1.41.0052
+
+[*] - CLOB_To_Strings now won't raise an exception if NULL CLOB is passed in,
+      empty Strings array will be returned instead.
+[*] - Improved the logic in SendMailEx2 with regard to To: header generation. 
+      v_to is now not supposed to contain a valid email address list, it can be
+      any string. Note that in this case at least one address should be 
+      supplied in either v_cc or v_bcc, otherwise an error will be generated. 
+      Also note that presence of single @ character in v_to indicates that this
+      argument contains at least one email address and will cause address line 
+      decoding to take place.
+[!] - SendMailEx2 Bcc: recipients could appear in To: line of the message. This
+      has been fixed.
+[!] - exceptions were not sometimes handled properly and were propagated to
+      the caller (in contrast with what the documentation says.) This has been
+      fixed.
+
+
+Version 1.41.0051
+
+[+] - added automatic EHLO negotiation for 8-bit MIME transport if 
+      Content-Transfer-Encoding is not explicitly specified in OTHER_HEADERS
+      or specified as 8bit. If the remote server does not support EHLO or
+      by occasion does not support 8BITMIME extension, the message will still
+      be delivered with Content-Transfer-Encoding: 8bit and *may* be crippled
+      by the server. For 100% guaranteed delivery you should still encode the
+      message and/or headers with non-ASCII characters using Base64.
+[*] - Updated UTL_BinFile to v1.04 - added ability to create and alter ZIP
+      archives stored as internal BLOBs. You can manipulate external archives
+      as well - simply load an archive into a BLOB with Load_BLOB_From_File,
+      alter it as needed, and save it back with Save_BLOB_To_File.
+[*] - Updated loadmail9i scripts to load correct UTL_BinFile Java classes file.
+
+
+Version 1.40.0050 - Release Version
+
+[*] - cleaned up for release
+[*] - UTL_BinFile is no longer dropped in dropall.sql since it may be
+      installed separately and still be in use.
+
+
+Version 1.40.0049 - Release Candidate 2
+
+[*] - improved internal MIME header extraction routine
+[+] - updated UTL_BinFile package to 1.03.007 - added ability to delete and
+      rename files and directories, create new directories, and compress/
+      decompress BLOBs using 'deflate' and 'gzip' methods.
+[*] - waived the requirement for 8.1.7.1 patchset/1512417 bug fix.
+
+
+Version 1.40.0048 - Release Candidate 1
+
+[*] - even more optimizations.
+[!] - fixed prerequisites check script so that it no longer looks for some
+      TCP-related Java classes on 9.2 (these classes are no longer necessary 
+      as UTL_TCP was reimplemented in native C in this release.)
+[+] - added installation scripts for Oracle9i (loadmail9i), backported them
+      to 1.35 along with reqcheck.sql.
+
+Version 1.40.0047
+
+[*] - better internal exception handling.
+[*] - more internal optimizations and redundant code elimination.
+[*] - limited error report lines to 2000 characters. 
+[+] - in ALWAYS_RELAY mode multiple recipient versions of SendMailEx and
+      SendMailEx2 are now sending to all recipients in one mail transaction.
+      Speed improvement and bandwidth savings are enormous, but nothing's
+      free: the functions can't determine delivery status immediately in this
+      mode (unless, of course, the relay server connection fails) and always
+      report success for all targets - the relay server will then report actual
+      status to the address specified as SENDER or in Return-Path header.
+      This prevents from verifying addresses by return codes, which is possible
+      in direct send mode.
+      This feature is further controlled by the new RELAY_IN_SINGLETRANS
+      package variable, which is TRUE by default. If you do not want the new
+      behavior in ALWAYS_RELAY mode, set RELAY_IN_SINGLETRANS to FALSE
+      before calling any SendMailEx[2] multi-recipient functions and the
+      functions will generate and send a copy of the message for each recipient
+      in separate transactions, as before.
+
+Version 1.40.0046
+
+[*] - internal optimizations to eliminate redundant code and improved
+      message generation and internal caching.
+
+Version 1.35.0045
+
+[*] - repackaged JAR files without compression, as LOADJAVA in 8.1.6 does not
+      accept compressed JARs.
+[!] - fixed small bug in header parser, which could cause invalid trailing
+      character to be appended to the extracted header value in some cases.
+
+Version 1.35.0044
+
+[!] - not all SendMailEx versions were parsing Return-Path header and assigning
+      proper reverse path to the message. This has been fixed.
+
+Version 1.34.0043
+
+
+[*] - cleaned up for release.
+[+] - added scanning for Return-Path: in OTHER_HEADERS. Address specified in
+      this header is used with MAIL command if found, otherwise sender's
+      email address is used. See FAQ Section 2.2.8 for details.
+
+Version 1.34.0042
+
+[!] - fixed bug where line breaks in message body were not always properly
+      checked and fixed.
+[!] - fixed bug introduced in v1.33 where some headers could be improperly
+      placed into message body corrupting the message if certain values for
+      OTHER_HEADERS were specified with SendMailEx call with attachment(s).
+[*] - improved forced headers wrapping logic.
+[*] - updated UTL_B64 to version 1.11.007.
+
+
+Version 1.34.0041
+
+[*] - updated UTL_B64 to version 1.11.006 - line length for encoded LOBs is
+      increased to 76 characters. This should make generated messages a bit
+      shorter. Also, LOB encoding speed improved significantly by LOB read 
+      buffering.
+[-] - removed Content-Length header generation for attachments as it is not
+      necessary.
+[*] - reqcheck.sql now verifies that running user is SYS.
+[*] - increased sizes of some internal variables to allow accepting larger
+      parameters in certain functions.
+[*] - made the package resistant to DBMS_SESSION.RESET_PACKAGE effect of 
+      resetting package variables to their defaults while NOT re-executing the
+      package init block.
+[+] - changed Version constant to function to avoid the above effect.
+
+
+Version 1.33.0040 - Release Version
+
+[+] - added updated UTL_BINFILE package, which now implements listing contents
+      and reading files from server-side external (OS files) and internal (BLOB)
+      ZIP or JAR archives. Documented new subprograms added to UTL_BINFILE in 
+      PSP_Mail documentation.
+
+Version 1.33.0039
+
+[*] - internal loops over PL/SQL collections (arrays) are rewritten to be 
+      resistant to holes in arrays (missing/unassigned elements.)
+[!] - recipient names encoded to Base64 are now enclosed in double quotes,
+      otherwise mail clients like Outlook/Outlook Express may misinterpret
+      them and display them as separate recipient addresses.
+[!] - internal long header wrapping routine now does not wrap Base64-encoded
+      headers, as these should be already correctly broken into pieces. It is
+      assumed that Base64-encoded headers are generated with 
+      UTL_B64.ENCODE_MIME_HEADER function, which correctly wraps the resulting
+      header.
+[!] - fixed other_headers not getting into the main email headers section
+      (they were only inserted into mail body section.) 
+      Content-Transfer-Encoding header, if present, is stripped from main
+      email headers and is only issued in body section to prevent mail client
+      attempts to decode the whole message since it's not actually encoded.
+
+Version 1.33.0038
+
+[!] - internal long header wrapping routine now forcibly wraps headers at 80th
+      character if no delimiter is located in current part.
+
+Version 1.32.0037 - Release Version
+
+[+] - exposed MXLookup function previously being internal to the package.
+      Function allows to query DNS for MX for given host or domain. DNS
+      query is always performed no matter ALWAYS_RELAY setting.
+      Documented that getMXForEmail always returns relay server address if
+      ALWAYS_RELAY is set to TRUE.
+[*] - error reporting is now consistent throughout the package.
+[+] - documented all error codes returned by package functions.
+
+Version 1.32.0036
+
+[*] - minor internal optimizations
+[+] - all LOB arguments for SendMailXXX functions are no longer IN OUT, now
+      they are IN.
+
+Version 1.32.0035
+
+[*] - package now uses UTL_SMTP.WRITE_RAW_DATA() to avoid automatic conversion
+      of message content to US7ASCII and allow for 8-bit transfer encoding.
+[!] - fixed minor bug in UTL_B64.decode(LOB) functions.
+[*] - optimized UTL_B64 package LOB operations: added LOB write buffering
+      and minimized LOB write calls, made all LOB arguments IN to enable
+      using LOB-related functions in SQL. Package upgraded to v1.1.0005
+
+Version 1.31.0034 - Release Version
+
+[!] - fixed minor bug introduced in v1.30 where PSP_Mail would incorrectly
+      convert address in form 'user@host.com' into canonic representation.
+
+Version 1.30.0033 - Release Version
+
+[*] - addresses in form 'Name user@host.com' (where email is not enclosed in
+      angle brackets as per RFC-822) are now supported and parsed by 
+      extractEmail and extractName correctly.
+[+] - added CLOB_To_Strings function that converts input opened CLOB to
+      Strings collection. May be used to pass CLOB as mail body.
+[+] - installation script now prompts for package configuration parameters
+      and puts provided values into package header before compiling it. To
+      change config after installation you still need to change values in
+      package header and recompile it.
+[!] - potential problems with DBCS databases: DBMS_LOB treats amount for CLOB
+      as number of characters requested while VARCHAR2 always treats size as
+      bytes - this can lead to internal buffer overflows on DBCS systems as
+      buffer should be twice as large as amount of data requested from CLOB.
+      This fact is taken into account and all CLOB read operations are now 
+      performed with amount being half of the buffer size. This may have 
+      slight negative impact on performance when working with large CLOBs.
+[*] - cleaned up for release.
+
+Version 1.21.0032 (unreleased)
+
+[*] - a few more internal optimizations.
+[!] - renamed internal to_blob routine to avoid conflict with standard function
+      introduced in 9i.
+[!] - identified the source of ORA-1460 on emails with attachments in 8.1.7.0.0
+      as side effect of Oracle bug #1512417 and updated system requirements
+      in documentation to require 8.1.7.1 for Release 3 or one-off patch for 
+      this bug installed on 8.1.6.
+
+Version 1.20.0031
+
+[*] - cleaned up for release.
+[*] - few minor optimizations and tweaks.
+
+Version 1.20.0030
+
+[*] - further improved performance when mail is sent to multiple recipients.
+
+Version 1.20.0029
+
+[*] - optimized forced close of failed connections.
+
+Version 1.20.0028
+
+[*] - improved performance and reduced memory requirements of internal CLOB 
+      to BLOB conversion
+[*] - improved performance when mail is sent to multiple recipients.
+
+Version 1.12.0027 - Release Version
+
+[*] - cleaned up for release
+[*] - updated License Management package to 1.1.0006
+[*] - dropall.sql now drops public synonyms created for Java classes.
+[+] - added List_Directory procedure to UTL_BINFILE, updated package to
+      single instance (with AUTHID CURRENT_USER).
+[+] - Attachments now have Content-Length specified to give a hint to mail
+      reader clients about expected attachment size.
+[*] - licensing module updated
+
+Version 1.12.0026
+
+[+] - added GMT_DIFF configuration parameter. Added automatic Date header 
+      generation using GMT_DIFF offset from GMT.
+[+] - added FileOperations Java class and UTL_BINFILE wrapper package to the 
+      distribution. This Java class provides facility to load OS files into
+      BLOBs and save BLOBs as OS files. It is intended to allow developers to
+      attach OS files to email messages.
+[+] - Documentation updated to document UTL_BINFILE package and provide 
+      examples of use.
+
+Version 1.11.0025 - Release Version
+
+[*] - cleaned up for release
+
+Version 1.11.0024 - Release Candidate 1
+
+[!] - fixed bug that prevented correct To: header to be generated in some
+      versions of SendMailEx.
+[+] - PSP_Mail now correctly wraps long To: and Cc: headers so that they fit
+      80 chars per header line restriction imposed by RFC-822.
+
+Version 1.11.0023
+
+[*] - fixed dropall.sql script to drop all public synonyms created with
+      loadall.sql script to avoid synonym creation errors in loadall.sql
+      when upgrading existing installation.
+[+] - added prerequisite packages/Java classes check on installation. 
+      Installation will now stop if either UTL_SMTP package or 
+      oracle.plsql.net.TCPConnection class do not exist in the database.
+[!] - fixed issue with different procedure parameters specification in package
+      spec and body which prevented compilation on some versions of Oracle.
+
+Version 1.11.0022
+
+[*] - fixed a bug in MXLookup.class which caused java.lang.NullPointerException
+      and a trace file to be generated when NULL was passed as domain to look
+      up.
+
+Version 1.11.0021
+
+[+] - documented UTL_B64 package in main documentation
+[+] - added encode_mime_header to the UTL_B64 package to encode headers
+      in national character sets according to RFC-2047
+[+] - added support for encoded strings in To:/From: headers 
+
+
+Version 1.1.0020 - Release Version
+
+[*] - added RelNotes.PDF document - Release Notes for Version 1.1
+[*] - cleaned up for release version
+
+
+Version 1.1.0019 - Release Candidate 3
+
+[!] - fixed the way Cc: header was added, now it appears in correct place.
+    
+
+Version 1.1.0018 - Release Candidate 2
+
+[*] - fixed installation script to create packages in correct order, and
+      to create public synonym for Base64 Java class.
+[!] - fixed headers generation in multipart messages.
+[!] - fixed extra blank line in message if other_headers is terminated with
+      CR/LF sequence.
+
+
+Version 1.1.0017
+
+[*] - changed the way Content-Transfer-Encoding is issued in multipart
+      messages - now it is set to 8bit automatically if no transfer encoding
+      is specified in other_headers.
+[*] - upgraded UTL_B64 to v1.0.002 (added encodeva function to encode
+      varchar2 arrays and vc_arr array type, compatible with PSP_Mail.Strings)
+[*] - upgraded License Manager to Version 1.1
+[!] - fixed bug with SendMailEx omitting From: header when only one
+      attachment was passed.
+
+
+Version 1.1.0016 - Release Candidate 1
+
+[!] - fixed Cc: header line sometimes adding unnecessary extra CR/LF in 
+      SendMailEx2.
+
+
+Version 1.1.0015
+
+[+] - Multiple recipients versions of SendMailEx now properly construct To:
+      header to include addresses of all other recipients.
+[!] - now all email addresses are converted to their canonic representation
+      (["literal"] <address@host>) automatically to prevent '501 syntax error'
+      from some strict hosts requiring that all addresses be in canonic form.
+
+
+Version 1.1.0014
+
+[!] fixed bug where Cc: header was always added even if v_cc was not specified
+    in SendMailEx2.
+
+
+Version 1.1.0012
+
+[!] extra double quote character in charset default value for content_type 
+    removed in several function definitions
+[!] a bug in internal CLOB to BLOB conversion routine that generated exception
+    when a closed CLOB was passed was fixed
+[+] added SendMailEx2 and a set of procedures/functions for dealing with
+    RFC-822 formatted addresses/address lists
+[+] all occurences of CR and/or LF characters in message text are replaced with
+    proper CR/LF sequences to avoid mail being rejected by qmail and other
+    strict SMTP servers.
+
+
+                              <end of HISTORY.TXT>

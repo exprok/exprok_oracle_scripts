@@ -1,0 +1,22 @@
+PL/SQL Developer Test script 3.0
+11
+-- Created on 27.06.2003 by ADMIN 
+declare 
+  -- Local variables here
+  i number;
+  n integer;
+begin
+--  i:=10;
+  select count(*) into :n 
+  from all_objects a
+  where a.object_id < :i;
+end;
+2
+i
+1
+1100
+3
+n
+1
+1080
+3

@@ -1,0 +1,84 @@
+Металинк:
+
+The Basics of IPv4 Subnet and Oracle Clusterware (Doc ID 1386709.1) https://support.oracle.com/epmos/faces/DocContentDisplay?id=1386709.1
+How to Modify Private Network Information in Oracle Clusterware (Doc ID 283684.1) https://support.oracle.com/epmos/faces/DocContentDisplay?id=283684.1
+How to Modify Public Network Information including VIP in Oracle Clusterware (Doc ID 276434.1) https://support.oracle.com/epmos/faces/DocContentDisplay?id=276434.1
+How to update the IP address of the SCAN VIP resources (ora.scan{n}.vip) (Doc ID 952903.1) https://support.oracle.com/epmos/faces/DocContentDisplay?id=952903.1
+How to Modify SCAN Setting or SCAN Listener Port after Installation (Doc ID 972500.1) https://support.oracle.com/epmos/faces/DocContentDisplay?id=972500.1
+
+Документация:
+
+GRID (Clusterware): Changing Network Addresses on Manually Configured Networks
+srvctl config nodeapps, scan, scan_listener, vip
+srvctl modify network, nodeapps, scan, scan_listener
+
+Наш конфиг:
+
+1) Приложения:
+
+[grid@isapp1 ~]$ /u01/grid/11.2.0.4/bin/oifcfg getif
+eth0  10.192.167.0  global  public
+eth1  192.168.74.0  global  cluster_interconnect
+
+VIP
+[grid@isapp1 ~]$ /u01/grid/11.2.0.4/bin/srvctl config nodeapps -a
+Network exists: 1/10.192.167.0/255.255.255.0/eth0, type static
+VIP exists: /isapp1-vip/10.192.167.133/10.192.167.0/255.255.255.0/eth0, hosting node isapp1
+VIP exists: /isapp2-vip/10.192.167.134/10.192.167.0/255.255.255.0/eth0, hosting node isapp2
+
+SCAN
+[grid@isapp1 ~]$ /u01/grid/11.2.0.4/bin/srvctl config network
+Network exists: 1/10.192.167.0/255.255.255.0/eth0, type static
+[grid@isapp1 ~]$ /u01/grid/11.2.0.4/bin/srvctl config scan
+SCAN name: is00-scan.buh.pes.spb.ru, Network: 1/10.192.167.0/255.255.255.0/eth0
+SCAN VIP name: scan1, IP: /is00-scan.buh.pes.spb.ru/10.192.167.191
+SCAN VIP name: scan2, IP: /is00-scan.buh.pes.spb.ru/10.192.167.192
+SCAN VIP name: scan3, IP: /is00-scan.buh.pes.spb.ru/10.192.167.193
+[grid@isapp1 ~]$ /u01/grid/11.2.0.4/bin/srvctl config scan_listener
+SCAN Listener LISTENER_SCAN1 exists. Port: TCP:1521
+SCAN Listener LISTENER_SCAN2 exists. Port: TCP:1521
+SCAN Listener LISTENER_SCAN3 exists. Port: TCP:1521
+
+2) БД:
+
+[grid@isdb1 ~]$ /u01/11.2.0.4/grid/bin/oifcfg getif
+bond1  192.168.74.0  global  cluster_interconnect
+bond0  10.192.167.0  global  public
+
+VIP
+[grid@isdb1 ~]$ /u01/11.2.0.4/grid/bin/srvctl config nodeapps -a
+Network exists: 1/10.192.167.0/255.255.255.0/bond0, type static
+VIP exists: /isdb1-vip/10.192.167.115/10.192.167.0/255.255.255.0/bond0, hosting node isdb1
+VIP exists: /isdb2-vip/10.192.167.117/10.192.167.0/255.255.255.0/bond0, hosting node isdb2
+VIP exists: /isdb3-vip/10.192.167.119/10.192.167.0/255.255.255.0/bond0, hosting node isdb3
+[grid@isdb1 ~]$ /u01/11.2.0.4/grid/bin/srvctl config vip -n isdb1
+VIP exists: /isdb1-vip/10.192.167.115/10.192.167.0/255.255.255.0/bond0, hosting node isdb1
+[grid@isdb1 ~]$ /u01/11.2.0.4/grid/bin/srvctl config vip -n isdb2
+VIP exists: /isdb2-vip/10.192.167.117/10.192.167.0/255.255.255.0/bond0, hosting node isdb2
+[grid@isdb1 ~]$ /u01/11.2.0.4/grid/bin/srvctl config vip -n isdb3
+VIP exists: /isdb3-vip/10.192.167.119/10.192.167.0/255.255.255.0/bond0, hosting node isdb3
+
+SCAN
+[grid@isdb1 ~]$ /u01/11.2.0.4/grid/bin/srvctl config network
+Network exists: 1/10.192.167.0/255.255.255.0/bond0, type static
+[grid@isdb1 ~]$ /u01/11.2.0.4/grid/bin/srvctl config scan
+SCAN name: isdb00-scan, Network: 1/10.192.167.0/255.255.255.0/bond0
+SCAN VIP name: scan1, IP: /isdb00-scan/10.192.167.121
+SCAN VIP name: scan2, IP: /isdb00-scan/10.192.167.122
+SCAN VIP name: scan3, IP: /isdb00-scan/10.192.167.120
+[grid@isdb1 ~]$ /u01/11.2.0.4/grid/bin/srvctl config scan_listener
+SCAN Listener LISTENER_SCAN1 exists. Port: TCP:1521
+SCAN Listener LISTENER_SCAN2 exists. Port: TCP:1521
+SCAN Listener LISTENER_SCAN3 exists. Port: TCP:1521
+
+Я обычно после изучения металинка и документации (именно в такой последовательности) проделываю всю последовательность на тесте. Замеряю примерно время исполнения шагов, отмечаю проблемы, баги, решения проблем и обходы. Затем пишу по тестовому проходу свою записку по конфигурации от прома.
+
+Кстати. Нашел в доке место, где авторы устанавливают различия между crsctl и srvctl:
+Additional Topics on SRVCTL https://docs.oracle.com/cd/E11882_01/rac.112/e41960/srvctladmin.htm#RACAD7407
+Difference between Using SRVCTL and CRSCTL
+Use SRVCTL to manage Oracle-supplied resources such as listener, instances, disk groups, and networks, and CRSCTL for managing Oracle Clusterware and its resources.
+
+Note:
+Oracle strongly discourages directly manipulating Oracle-supplied resources (resources whose names begin with ora) using CRSCTL. This could adversely impact the cluster configuration.
+
+-- 

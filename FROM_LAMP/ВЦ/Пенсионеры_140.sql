@@ -1,0 +1,6 @@
+SELECT v.tn, v.fio, v.MP, v.dr, v.pol, decode(v.pol, 'М', 60, 'Ж', 55) - v.Лет "До пенсии, лет",v.Стаж
+  FROM (SELECT c.tn, c.fio, c.mp, t.dr, t.pol, round((SYSDATE - to_date(t.dp)) / 365.25, 2) Стаж,
+                round((SYSDATE - to_date(t.dr)) / 365.25, 2) Лет
+           FROM w_kadr.v_person_mp_current c, w_kadr.zpl_m301 t
+          WHERE (c.tn = t.nt AND c.mp = 140)) v
+ ORDER BY "До пенсии, лет"

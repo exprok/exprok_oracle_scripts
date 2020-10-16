@@ -1,0 +1,1 @@
+drop user w_sprmat_test cascade

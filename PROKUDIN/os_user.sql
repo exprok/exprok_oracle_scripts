@@ -1,0 +1,1 @@
+select upper(sys_context('USERENV','OS_USER')) from dual

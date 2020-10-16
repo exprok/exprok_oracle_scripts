@@ -1,0 +1,1 @@
+tar -cvpf - ./ --exclude=./temp/* --exclude=./logs/* --exclude=./webapps/* --exclude=./work/* --exclude=./tiger/ivk/* --one-file-system | (cd /u01/tomcat9999/ && tar -xvpf -) 

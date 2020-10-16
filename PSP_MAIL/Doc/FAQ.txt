@@ -1,0 +1,330 @@
+ ... FAQ.txt ....................................... PSP_Mail FAQ Release 8 ...
+                                                            September, 2004
+                                    Copyright(c) 2001-2004 by Hit-Media LLC
+
+
+ 1. Introduction
+ ~~~~~~~~~~~~~~~
+
+ PSP_Mail is an all-in-one solution for sending various types of e-mail from
+ Oracle8i/9i database. This package utilizes the UTL_SMTP package for SMTP 
+ transport. UTL_SMTP is part of Oracle8i since Release 2 (8.1.6).
+
+ This FAQ contains answers to some of the most frequently asked questions about
+ both PSP_Mail and about sending e-mail from Oracle8i R2 or later database.
+
+
+ 2. Frequently Asked Questions
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ This chapter is separated into two sections. Section 2.1 contains answers
+ to questions about PSP_Mail installation and verification. Section 2.2 
+ contains answers to general questions about using PSP_Mail.
+
+ Contents of this section:
+
+ 2.1 Installation Issues.
+
+ 2.1.1 Q: I installed PSP_Mail as per installation instructions and am using
+          the sample test call to check if it works. I am receiving 
+          "User-defined exception" or "ORA-20001 421 Service not available"
+          response when send is attempted.
+
+ 2.2 General Issues.
+
+ 2.2.1 Q: Why PSP_Mail? Can't I simply use UTL_SMTP or install JavaMail into
+          the database and use these?
+ 2.2.2 Q: Documentation says that PSP_Mail is an addon for Dynamic PSP. Does
+          this mean that is can't be used without DPSP?
+ 2.2.3 Q: How do I send messages that contain non-English text and/or headers?
+ 2.2.4 Q: I want to send a BFILE as an attachment using PSP_Mail, but it 
+          doesn't seem to have such capability.
+ 2.2.5 Q: I want to send an arbitrary OS file which name and path is known as
+          an attachment, but PSP_Mail doesn't seem to be able to do it.
+ 2.2.6 Q: I want to create a mail queue for outgoing mail rather than send each
+          message directly. PSP_Mail doesn't seem to have such capability.
+ 2.2.7 Q: I want to send email from a trigger. Is this possible and what's
+          the best way to do it?
+ 2.2.8 Q: I am sending all my mail through relay server. I want notifications
+          about undelivered messages to be sent to an address different from
+          the address of the server. How can I do this?
+ 2.2.9 Q: I would like to send a message that includes both text and HTML 
+          versions of the content so that if client's mail reader does not
+          support HTML it will display the plain text version. However, I
+          did not find any interface for doing this in PSP_Mail - is it
+          possible to send such messages with PSP_Mail?
+
+                                             
+ 2.1 Installation Issues.
+ ~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 2.1.1 Q: I installed PSP_Mail as per installation instructions and am using
+          the sample test call to check if it works. I am receiving 
+          "User-defined exception" or "ORA-20001 421 Service not available"
+          response when send is attempted.
+
+       A: This error message is an indication of some required Oracle-supplied
+          Java classes being missing from the database. These classes should
+          be loaded manually. We experienced invalidation/deletion of these
+          classes when applying Oracle patch sets which require JVM rebuild.
+          To reload the missing classes, issue the following command (command
+          line is wrapped for reading convenience):
+
+          loadjava -user sys/your_sys_password[@yourhost] -resolve -s
+                   $ORACLE_HOME/plsql/jlib/plsql.jar
+
+          or %ORACLE_HOME%\plsql\jlib\plsql.jar if you're under Windows. This
+          command will load and resolve Java classes which are used in UTL_TCP
+          and UTL_SMTP packages. You can then retry the test script and the
+          error message above should not appear anymore.
+
+          Note that in Oracle9i 9.2 UTL_TCP was rewritten in native C and these
+          classes are no longer necessary. If you are still receiving 421
+          errors, this probably means that the SMTP server is unavailable for
+          some reason.
+
+
+ 2.2 General Issues.
+ ~~~~~~~~~~~~~~~~~~~
+
+ 2.2.1 Q: Why PSP_Mail? Can't I simply use UTL_SMTP or install JavaMail into
+          the database and use these?
+
+       A: In a couple of words: ease of use. Sure you can use UTL_SMTP 
+          directly, but it would require you to deal with message formatting
+          and different SMTP server issues yourself. We already took care of
+          these. You can send quite complex email using PSP_Mail with as much
+          as 10 lines of code while with UTL_SMTP's raw interface it would
+          require a lot more. Plugging in JavaMail is not trivial either -
+          you have to deal with the fact that Java class instances are not
+          available directly to PL/SQL, so you have to create your own wrapper
+          classes that will manage multiple instances of particular class
+          internally and use some scalar types, like int, to identify them
+          from PL/SQL. PSP_Mail is almost 100% PL/SQL and only uses Java where
+          absolutely necessary (for DNS lookups, for example) and transparently
+          to the application developer. The choice is, of course, yours. If
+          you feel it is cost-effective to waste your precious time on 
+          developing your own set of routines rather than spend a few dollars
+          on ready to use solution - go for it.
+
+
+ 2.2.2 Q: Documentation says that PSP_Mail is an addon for Dynamic PSP. Does
+          this mean that is can't be used without DPSP?
+
+       A: No. Although PSP_Mail comes as addon with Enterprise Edition of 
+          Dynamic PSP, it does not rely on DPSP code and can be used as a
+          standalone package.
+
+
+ 2.2.3 Q: How do I send messages that contain non-English text and/or headers?
+
+       A: Such messages should be encoded into a transportable format which
+          does not contain non-English characters. One of such formats which
+          is commonly used is Base64 encoding. With this encoding, each group
+          of 3 characters is encoded into 4 ASCII characters from a set of
+          64 (hence the name). PSP_Mail includes an utility package UTL_B64
+          which implements the Base64 encoding. UTL_B64 can be used to encode 
+          both message body and some of the headers, including Subject, From 
+          and To.
+
+          Below is a code snippet which shows how to use UTL_B64 for encoding
+          of email body and Subject header. Please note that you should always
+          specify correct IANA character set of the message content, otherwise
+          the email client may be unable to display the message properly.
+
+          declare
+               msg PSP_Mail.Strings;
+                rc PSP_Mail.Strings;
+          begin
+               msg(msg.count+1) := convert('Some international text','UTF8');
+               msg := utl_b64.EncodeVA(msg); -- msg now contains encoded text
+               rc  := PSP_Mail.SendMailEx2(v_from => 'me <me@here.com>',
+                               v_to   => 'you <you@there.com>',
+                               v_subject => utl_b64.encode_mime_header(
+                                 convert('Some international subject','UTF8')
+                                ,'utf-8'),
+                               v_body => msg,
+                               attachments => PSP_Mail.TBAtt_Empty,
+                               other_headers => 'Content-Transfer-Encoding: base64',
+                               content_type => 'text/plain; charset="utf-8"'
+                              );
+          end;
+
+          Please note that other_headers parameter should always contain at
+          least 'Content-Transfer-Encoding: base64' header to notify the email
+          server and client that the message is encoded using Base64 - PSP_Mail
+          cannot detect if it is or not. Also note that charset in content_type
+          parameter should match charset parameter for encode_mime_header since
+          the client will attempt to display both message and header using the
+          character set specified in content_type. Finally, see how the message
+          text was converted into target character set using Oracle built-in
+          CONVERT() function - this is necessary unless your database charset
+          is already the same as the one the message is in (UTF-8 in this 
+          particular case).
+
+          Also note, that for 8-bit character sets, 8bit content transfer
+          encoding is valid in most cases. PSP_Mail automatically assigns
+          8bit transfer encoding if different encoding is not specified through
+          OTHER_HEADERS argument, negotiates 8-bit transfer mode with the
+          SMTP server and sends raw data without any character set conversion. 
+          For guaranteed delivery though Base64 encoding is recommended as it 
+          is recognized by virtually all mail servers and clients.
+
+
+ 2.2.4 Q: I want to send a BFILE as an attachment using PSP_Mail, but it 
+          doesn't seem to have such capability.
+
+       A: This is only partially correct. You cannot send BFILEs directly, but
+          you can use temporary LOBs and DBMS_LOB.LOADFROMFILE() procedure to
+          load a BFILE into a BLOB and then attach it to the message using
+          TBAttachments.
+
+
+ 2.2.5 Q: I want to send an arbitrary OS file which name and path is known as
+          an attachment, but PSP_Mail doesn't seem to be able to do it.
+
+       A: Since Version 1.12, PSP_Mail provides UTL_BINFILE package which
+          allows developers to read/write arbitrary binary OS files into/from
+          BLOBs. This package can be used to load OS files into BLOBs and send 
+          them as attachments.
+
+
+ 2.2.6 Q: I want to create a mail queue for outgoing mail rather than send each
+          message directly. PSP_Mail doesn't seem to have such capability.
+
+       A: PSP_Mail currently does not implement its own mail queue. But you
+          still can create one by setting up a mail relay server (that is,
+          an SMTP server which accepts mail from anyone and forwards it to
+          the destination) and then set up PSP_Mail with SMTP_HOST = <your
+          new relay server> and ALWAYS_RELAY = True. This way, all email will 
+          be sent to the relay server (it will be quite quick since this relay
+          server is on your LAN) and the relay server will then bother with
+          delivering it to the recipient. You can configure the relay server 
+          to keep trying for, say, 3 days before returning mail back to
+          sender, etc.
+
+ 2.2.7 Q: I want to send email from a trigger. Is this possible and what's
+          the best way to do it?
+
+          It is generally possible, but sending an email may take quite a lot
+          of time and triggers are supposed to run as fast as possible. Another
+          side effect is that although the trigger changes may be rolled back
+          if triggering transaction is rolled back, email will still be sent.
+          The best way to implement emailing from a trigger is to use DBMS_JOB
+          to schedule email to be sent asynchronously. One benefit of this
+          approach is that DBMS_JOB.SUBMIT can be rolled back, that is, if
+          the transaction is rolled back, the job submissions issued in this
+          transaction will be rolled back too and email will not go out. An 
+          obvious drawback of this approach is the fact that data available 
+          to the trigger via :NEW and :OLD will not be available to the job 
+          you will schedule, so you might need to invent a way to pass all 
+          information from the trigger into the job PL/SQL code (either store
+          it in a table or embed it into the job code as constants).
+
+ 2.2.8 Q: I am sending all my mail through relay server. I want notifications
+          about undelivered messages to be sent to an address different from
+          the address of the server. How can I do this?
+
+          RFC-822 and RFC-2822 reserve Return-Path: header for the purpose of
+          specifying the mailbox to which delivery failure notifications should
+          be sent. However, requirements in RFC-822 and RFC-2822 differ as of
+          position in which this header should appear in the message: RFC-822
+          does not insist on any particular order of headers, though it 
+          recommends that Return-Path: is the first header of the message.
+          RFC-2822 explicitly requires this header to be the first. However, 
+          it appears that at least some popular SMTP servers do not honor this
+          header wherever it appears and still send delivery failure 
+          notifications to sender's address (the address specified in SMTP 
+          "MAIL" command.) Since Version 1.34, if you supply Return-Path header
+          in OTHER_HEADERS, the address from this header is used in MAIL 
+          command to ensure this address is used for delivery failure 
+          notification:
+
+          SendMailEx(...
+                     ,OTHER_HEADERS => 'Return-Path: <bounce-to-me@host.com>'
+                     ...)
+          
+          and PSP_Mail will extract bounce-to-me@host.com address from this
+          header and will use it with MAIL command. If the delivery will fail,
+          the SMTP server will send delivery failure notification message to
+          this address instead of the one specified in the From header.
+
+ 2.2.9 Q: I would like to send a message that includes both text and HTML 
+          versions of the content so that if client's mail reader does not
+          support HTML it will display the plain text version. However, I
+          did not find any interface for doing this in PSP_Mail - is it
+          possible to send such messages with PSP_Mail?
+
+       A: Yes, this is possible, but not automatically. Such messages use
+          special content type - multipart/alternative - and you need to
+          construct the MIME message body yourself. Here's an example code,
+          which constructs such message and sends it using SendMailEx2
+          (note that the message content is intentionally not aligned -
+          it is critical that the message contain no leading spaces at
+          least in headers):
+
+          declare
+             msg psp_mail.Strings;
+             res psp_mail.Strings;
+             att psp_mail.tbattachments;
+          begin
+             msg(1) := '--=_Next_Part_AABBCCDDEEFF
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Test
+
+--=_Next_Part_AABBCCDDEEFF
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<html>
+<body>
+<H1>Test</H1>
+<img src="cid:image01" alt="Image 01">
+</body>
+</html>
+--=_Next_Part_AABBCCDDEEFF--
+';
+
+             att(1).content := utl_binfile.load_blob_from_file('/path/to/images/image.gif');
+             att(1).name := 'image.gif';
+             att(1).content_type := 'image/gif';
+             att(1).content_id := 'image01';
+
+             res := psp_mail.SendMailEx2(v_from =>'"Me" <me@mycompany.com>',
+                                         v_to => '"You" <you@yourcompany.com>',
+                                         v_subject => 'Multipart/Alternate Test',
+                                         v_body => msg,
+                                         content_type => 'multipart/alternative;'||psp_mail.nlt||
+                                                         'boundary="=_Next_Part_AABBCCDDEEFF"',
+                                         attachments => att);
+          end;
+
+          As you can see from the code above, we are bulding the MIME-formatted
+          message and then sending it with SendMailEx2 specifying the content
+          type of 'multipart/alternative;boundary="<boundary_string>"'. The
+          order of message versions should be from the simplest (text/plain)
+          to the most complex (text/html or even text/rtf). Multipart/alternative
+          message layout is as follows:
+
+          --<boundary_string>
+          Content-Type: text/plain
+          Header: value
+          ...
+
+          Content
+          --<boundary_string>
+          Content-Type: text/html
+          Header: value
+          ...
+
+          <html>Content</html>
+          --<boundary_string>--
+
+          It is up to you to issue correct headers for each version of the
+          message (at least Content-Type with correct charset parameter
+          and possibly Content-Transfer-Encoding.)
+
+          For more information on MIME formatting please refer to the MIME
+          standard (RFC-2045 through 2047.)

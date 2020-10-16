@@ -1,0 +1,4 @@
+select spid, osuser, s.program, s.LOGON_TIME, s.sid, 'orakill '||d.NAME||' '||spid as orakill 
+from v$process p, v$session s, v$database d
+where p.addr=s.paddr and s.OSUSER <> 'SYSTEM' and s.LOGON_TIME<sysdate-0.5 and s.STATUS='SNIPED'
+order by 4 

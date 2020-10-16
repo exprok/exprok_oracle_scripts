@@ -1,0 +1,18 @@
+-- получение sql_profile
+select s.PLAN_HASH_VALUE,
+       s.ADDRESS,
+       (s.ELAPSED_TIME / s.EXECUTIONS) / 1000000,
+       s.EXECUTIONS,
+       s.CHILD_NUMBER,
+       s.*
+  from v$sql s
+ where s.SQL_ID = '6nc15cb4pubx8'
+
+
+
+-- удаление sql_profile
+BEGIN
+  DBMS_SQLTUNE.DROP_SQL_PROFILE ( 
+    name => 'SYS_SQLPROF_015ce9528d3e0003' 
+);
+END;

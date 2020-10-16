@@ -1,0 +1,36 @@
+
+
+DECLARE
+  l_plans_unpacked  PLS_INTEGER;
+BEGIN
+  dbms_spm.create_stgtab_baseline(table_name => 'xx_tb_bl_tmp');
+  
+  l_plans_unpacked := DBMS_SPM.pack_stgtab_baseline(
+    table_name      => upper('xx_tb_bl_tmp')
+);
+
+  DBMS_OUTPUT.put_line('Plans Unpacked: ' || l_plans_unpacked);
+  
+  Dbms_Sqltune.create_stgtab_sqlprof(table_name => 'xx_tb_pr_tmp');
+  DBMS_SQLTUNE.PACK_STGTAB_SQLPROF(staging_table_name => upper('xx_tb_pr_tmp'));
+END;
+
+
+DECLARE
+  l_plans_unpacked  PLS_INTEGER;
+BEGIN
+  l_plans_unpacked := DBMS_SPM.unpack_stgtab_baseline(
+    table_name      => upper('xx_tb_bl_tmp'),
+    table_owner     => 'PES_TIGER');
+
+  DBMS_OUTPUT.put_line('Plans Unpacked: ' || l_plans_unpacked);
+  
+  DBMS_SQLTUNE.UNPACK_STGTAB_SQLPROF(REPLACE => TRUE,staging_table_name => upper('xx_tb_pr_tmp'));
+END;
+
+
+
+
+--select * from xx_sql_plan_profile_stg
+
+--select * from xx_sql_plan_baseline_stg

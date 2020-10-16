@@ -1,0 +1,12 @@
+SELECT v1.dce, v1.vi, v1.rz "Материал_было", '' "Материал_стало", v1.nn "nn8", min(o2.dce)
+  FROM w_kts.v_oo_mn v1, w_kts.cp cp, w_kts.oo o2,
+       (SELECT DISTINCT spr.dce, spr.v
+           FROM w_kts.n3nom n, w_kts.n3spr spr
+          WHERE n.uzak = '01034'
+            AND (n.isg = '003' OR n.pol = '003')
+            AND spr.kdce = n.kdce) v2
+ WHERE v1.dce = v2.dce
+   AND v1.vi = v2.v and v1.kdce=cp.kdce_ch and cp.kdce_k=o2.kdce
+group by v1.dce, v1.vi, v1.rz, '', v1.nn
+
+order by v1.rz, v1.dce

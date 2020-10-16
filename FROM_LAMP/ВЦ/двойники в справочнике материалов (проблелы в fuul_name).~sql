@@ -1,0 +1,9 @@
+select t.nn, t.name_full
+from w_sprmat.tb_mat_spr t 
+where trim(t.name_full) in
+     (select trim(t.name_full) 
+      from w_sprmat.tb_mat_spr t
+      group by trim(t.name_full)
+      having count(*)>1
+     )
+order by 2,1

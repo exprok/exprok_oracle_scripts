@@ -1,0 +1,1 @@
+create tablespace main datafile 'd:\main\main\main.dat'   size 1G autoextend on next 1G maxsize unlimited  ,  'd:\main\main\main2.dat'   size 1G autoextend on next 1G maxsize unlimited ;

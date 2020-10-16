@@ -1,0 +1,13 @@
+SELECT trunc(p.PGA_ALLOC_MEM / (1024 * 1024)) PGA_,
+	 S.sid,
+	 S.username,
+	 S.module,
+	 S.program,
+	 sa.SQL_TEXT,
+	 S.TERMINAL,
+	 sysdate timestamp_,
+	 s.STATUS
+  FROM v$process P, v$session S, v$sqlarea sa
+ WHERE p.addr = s.paddr
+   and s.SQL_ADDRESS = sa.ADDRESS(+)
+ order by p.PGA_USED_MEM desc

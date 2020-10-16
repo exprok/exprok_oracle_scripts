@@ -1,0 +1,3 @@
+create bigfile tablespace MATERIAL DATAFILE '/u01/dbe/lintest/material.dat' SIZE 10G AUTOEXTEND ON NEXT 10G; 
+create bigfile tablespace TS_INDEX DATAFILE '/u01/dbe/lintest/TS_LOB.dat' SIZE 10G AUTOEXTEND ON NEXT 10G;
+create bigfile tablespace TS_LOB DATAFILE '/u01/dbe/lintest/TS_LOB.dat' SIZE 10G AUTOEXTEND ON NEXT 10G;

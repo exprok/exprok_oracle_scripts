@@ -1,0 +1,12 @@
+begin 
+sys.dbms_logmnr.
+sys.dbms_logmnr.add_logfile
+  (logfilename => 'D:\temp\UTL\ARCH_20268_001.ARC',
+  options => 1);
+/*sys.dbms_logmnr.add_logfile
+  (logfilename => 'D:\temp\UTL\ARCH_20267_001.ARC',
+  options => 3);
+*/sys.dbms_logmnr.start_logmnr(dictfilename => 'd:\temp\utl\w851');
+end;
+
+/

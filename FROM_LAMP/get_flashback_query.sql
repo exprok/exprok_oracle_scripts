@@ -1,0 +1,4 @@
+SELECT * FROM dba_snapshots
+AS OF TIMESTAMP (SYSTIMESTAMP - INTERVAL '60' MINUTE) 
+ss
+where ss.owner='W_DCE_ERR'

@@ -1,0 +1,9 @@
+select pool, sum(s.BYTES)
+from v$sgastat s
+where s.POOL is not null
+group by pool
+union
+select pool||' free memory', s.BYTES
+from v$sgastat s
+where s.NAME='free memory'
+order by 1

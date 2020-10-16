@@ -1,0 +1,1063 @@
+
+On Error Resume Next                                                                                          
+strComputer = "amy.ad.vz"                                                                                     
+Set colAccounts = GetObject("WinNT://" & strComputer & "")                                                    
+Set oWshNet = CreateObject("WScript.Network" )                                                                
+sNetBIOSDomain = oWshNet.UserDomain                                                                           
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_120_VVW2_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_120_VVW2_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_120_VVW2_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_120_VVW_d")                                              
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_120_VVW_d,group" )                           
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_120_VVW_d" & ",group" )                                      
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_124PZ_R1_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_124PZ_R1_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_124PZ_R1_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_124PZ_R2_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_124PZ_R2_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_124PZ_R2_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_ACCESS_EDIT_ROLE_d")                                     
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_ACCESS_EDIT_ROLE_d,group" )                  
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_ACCESS_EDIT_ROLE_d" & ",group" )                             
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_SOSTAVCHANGE_d")                                  
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_SOSTAVCHANGE_d,group" )               
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_SOSTAVCHANGE_d" & ",group" )                          
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_STVCHG_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_STVCHG_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_STVCHG_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_STVCHK_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_STVCHK_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_STVCHK_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_STVDEP_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_STVDEP_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_STVDEP_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_STVDLT_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_STVDLT_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_STVDLT_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_STVTC_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_STVTC_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_STVTC_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_STVVW2_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_STVVW2_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_STVVW2_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_STVVW_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_STVVW_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_STVVW_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_UA_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_UA_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_UA_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_UIOA_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_UIOA_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_UIOA_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_UIOD_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_UIOD_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_UIOD_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_UIUA_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_UIUA_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_UIUA_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_UIUD_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_UIUD_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_UIUD_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_UKA_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_UKA_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_UKA_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_UKC_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_UKC_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_UKC_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_UKD_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_UKD_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_UKD_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_ULA_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_ULA_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_ULA_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_ULC_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_ULC_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_ULC_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BDD120_ULD_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BDD120_ULD_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BDD120_ULD_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_BOLN_READ_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_BOLN_READ_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_BOLN_READ_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_DOC_E_d")                                                
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_DOC_E_d,group" )                             
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_DOC_E_d" & ",group" )                                        
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_DOC_R_d")                                                
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_DOC_R_d,group" )                             
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_DOC_R_d" & ",group" )                                        
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_INSTR_AD_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_INSTR_AD_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_INSTR_AD_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_INSTR_GR_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_INSTR_GR_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_INSTR_GR_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_INSTR_I_d")                                              
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_INSTR_I_d,group" )                           
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_INSTR_I_d" & ",group" )                                      
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_JLOG_READER_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_JLOG_READER_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_JLOG_READER_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_103_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_103_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_103_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_118_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_118_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_118_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_BOSS_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_BOSS_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_BOSS_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_EDIT_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_EDIT_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_EDIT_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_MATNORM_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_MATNORM_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_MATNORM_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_RAZRAB_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_RAZRAB_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_RAZRAB_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_READ_MATNORM_d")                                    
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_READ_MATNORM_d,group" )                 
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_READ_MATNORM_d" & ",group" )                            
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_READ_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_READ_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_READ_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KALC_TEST1_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KALC_TEST1_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KALC_TEST1_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KONFIG_Q_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KONFIG_Q_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KONFIG_Q_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KONFIG_READ_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KONFIG_READ_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KONFIG_READ_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_KONFIG_WRITE_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_KONFIG_WRITE_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_KONFIG_WRITE_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_MOVE_MAT_FULL_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_MOVE_MAT_FULL_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_MOVE_MAT_FULL_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_MOVE_MAT_READ_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_MOVE_MAT_READ_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_MOVE_MAT_READ_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_MP_TEST_R_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_MP_TEST_R_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_MP_TEST_R_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_EDITOR_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_EDITOR_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_EDITOR_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_LINKER_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_LINKER_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_LINKER_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_POWER_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_POWER_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_POWER_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_VIEWER_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_VIEWER_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_VIEWER_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_VIEW_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_VIEW_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_VIEW_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_ZAGR_EC_READ_d")                                    
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_ZAGR_EC_READ_d,group" )                 
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_ZAGR_EC_READ_d" & ",group" )                            
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_ZAGR_FAKT_GROUP_d")                                 
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_ZAGR_FAKT_GROUP_d,group" )              
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_ZAGR_FAKT_GROUP_d" & ",group" )                         
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_ZAGR_FAKT_d")                                       
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_ZAGR_FAKT_d,group" )                    
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_ZAGR_FAKT_d" & ",group" )                               
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OBOR_ZAGR_PLAN_d")                                       
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OBOR_ZAGR_PLAN_d,group" )                    
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OBOR_ZAGR_PLAN_d" & ",group" )                               
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPER_DEFIZ_OP_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPER_DEFIZ_OP_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPER_DEFIZ_OP_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPER_OBNOM_GOR_d")                                       
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPER_OBNOM_GOR_d,group" )                    
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPER_OBNOM_GOR_d" & ",group" )                               
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPER_OBNOM_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPER_OBNOM_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPER_OBNOM_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPER_PROV_IN_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPER_PROV_IN_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPER_PROV_IN_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPOVESH_DEV_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPOVESH_DEV_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPOVESH_DEV_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPTCEN_EC_TEP_ALL_d")                                    
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPTCEN_EC_TEP_ALL_d,group" )                 
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPTCEN_EC_TEP_ALL_d" & ",group" )                            
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPTCEN_EC_TEP_CEH_d")                                    
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPTCEN_EC_TEP_CEH_d,group" )                 
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPTCEN_EC_TEP_CEH_d" & ",group" )                            
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPTEC_E_d")                                              
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPTEC_E_d,group" )                           
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPTEC_E_d" & ",group" )                                      
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPTEC_R_d")                                              
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPTEC_R_d,group" )                           
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPTEC_R_d" & ",group" )                                      
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPUARHIV_AD_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPUARHIV_AD_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPUARHIV_AD_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPUARHIV_A_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPUARHIV_A_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPUARHIV_A_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPUARHIV_P_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPUARHIV_P_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPUARHIV_P_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPUARHIV_R_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPUARHIV_R_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPUARHIV_R_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OPUARHIV_Z_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OPUARHIV_Z_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OPUARHIV_Z_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_ORA_WIN_JOB_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_ORA_WIN_JOB_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_ORA_WIN_JOB_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OTK_TR_ED_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OTK_TR_ED_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OTK_TR_ED_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OTK_TR_IZM_UT_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OTK_TR_IZM_UT_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OTK_TR_IZM_UT_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OTK_TR_RD_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OTK_TR_RD_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OTK_TR_RD_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_OZP_d")                                                  
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_OZP_d,group" )                               
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_OZP_d" & ",group" )                                          
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SAP_BASE_A_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SAP_BASE_A_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SAP_BASE_A_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SAP_BASE_B_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SAP_BASE_B_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SAP_BASE_B_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SAP_BASE_D_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SAP_BASE_D_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SAP_BASE_D_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SAP_BASE_S_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SAP_BASE_S_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SAP_BASE_S_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SHTATALL_SADMIN_d")                                      
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SHTATALL_SADMIN_d,group" )                   
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SHTATALL_SADMIN_d" & ",group" )                              
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SHTATALL_SA_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SHTATALL_SA_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SHTATALL_SA_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SHTATALL_SDA_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SHTATALL_SDA_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SHTATALL_SDA_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SHTATALL_SDL_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SHTATALL_SDL_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SHTATALL_SDL_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SHTATALL_SL_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SHTATALL_SL_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SHTATALL_SL_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SHTATALL_SUSER_d")                                       
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SHTATALL_SUSER_d,group" )                    
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SHTATALL_SUSER_d" & ",group" )                               
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SHTAT_KV_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SHTAT_KV_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SHTAT_KV_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLDELETEH_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLDELETEH_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLDELETEH_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLDELETET_ISP_d")                                      
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLDELETET_ISP_d,group" )                   
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLDELETET_ISP_d" & ",group" )                              
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLDELETET_OTVISP_d")                                   
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLDELETET_OTVISP_d,group" )                
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLDELETET_OTVISP_d" & ",group" )                           
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLEXECUTEPR_ISP_d")                                    
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLEXECUTEPR_ISP_d,group" )                 
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLEXECUTEPR_ISP_d" & ",group" )                            
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLEXECUTEPR_OTVISP_d")                                 
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLEXECUTEPR_OTVISP_d,group" )              
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLEXECUTEPR_OTVISP_d" & ",group" )                         
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLINSERTT_ISP_d")                                      
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLINSERTT_ISP_d,group" )                   
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLINSERTT_ISP_d" & ",group" )                              
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLINSERTT_OTVISP_d")                                   
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLINSERTT_OTVISP_d,group" )                
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLINSERTT_OTVISP_d" & ",group" )                           
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLSELECTT_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLSELECTT_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLSELECTT_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLSELECTV_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLSELECTV_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLSELECTV_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLUPDATET_ISP_d")                                      
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLUPDATET_ISP_d,group" )                   
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLUPDATET_ISP_d" & ",group" )                              
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGLUPDATET_OTVISP_d")                                   
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGLUPDATET_OTVISP_d,group" )                
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGLUPDATET_OTVISP_d" & ",group" )                           
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGL_ISP_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGL_ISP_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGL_ISP_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGL_OTVISP_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGL_OTVISP_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGL_OTVISP_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOGL_TEST1_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOGL_TEST1_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOGL_TEST1_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOVMPROEKT_AD_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOVMPROEKT_AD_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOVMPROEKT_AD_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOVMPROEKT_AU_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOVMPROEKT_AU_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOVMPROEKT_AU_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOVMPROEKT_IS_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOVMPROEKT_IS_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOVMPROEKT_IS_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SOVMPROEKT_ZA_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SOVMPROEKT_ZA_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SOVMPROEKT_ZA_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SPRINT_AD_d")                                            
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SPRINT_AD_d,group" )                         
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SPRINT_AD_d" & ",group" )                                    
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SPRINT_ARH_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SPRINT_ARH_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SPRINT_ARH_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_SPRINT_TEH_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_SPRINT_TEH_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_SPRINT_TEH_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_STVDLT_d")                                               
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_STVDLT_d,group" )                            
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_STVDLT_d" & ",group" )                                       
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_LOGON_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_LOGON_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_LOGON_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_ROOT_EXECUTE_d")                                   
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_ROOT_EXECUTE_d,group" )                
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_ROOT_EXECUTE_d" & ",group" )                           
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_ROOT_ROLLBACK_d")                                  
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_ROOT_ROLLBACK_d,group" )               
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_ROOT_ROLLBACK_d" & ",group" )                          
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_ROOT_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_ROOT_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_ROOT_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_RO_EXECUTE_d")                                     
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_RO_EXECUTE_d,group" )                  
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_RO_EXECUTE_d" & ",group" )                             
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_RO_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_RO_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_RO_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_SELECTALLTABLES_d")                                
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_SELECTALLTABLES_d,group" )             
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_SELECTALLTABLES_d" & ",group" )                        
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_SELECTALLVIEWS_d")                                 
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_SELECTALLVIEWS_d,group" )              
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_SELECTALLVIEWS_d" & ",group" )                         
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_TEMP_EXECUTE_d")                                   
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_TEMP_EXECUTE_d,group" )                
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_TEMP_EXECUTE_d" & ",group" )                           
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEPLO_TEMP_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEPLO_TEMP_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEPLO_TEMP_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEST_BOS_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEST_BOS_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEST_BOS_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEST_NEW_d")                                             
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEST_NEW_d,group" )                          
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEST_NEW_d" & ",group" )                                     
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEST_ROLE0_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEST_ROLE0_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEST_ROLE0_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEST_ROLE1_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEST_ROLE1_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEST_ROLE1_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEST_ROLE2_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEST_ROLE2_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEST_ROLE2_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TEST_ROLE3_d")                                           
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TEST_ROLE3_d,group" )                        
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TEST_ROLE3_d" & ",group" )                                   
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TRUD_SITE3_VIEV_DET_AL1_d")                              
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TRUD_SITE3_VIEV_DET_AL1_d,group" )           
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TRUD_SITE3_VIEV_DET_AL1_d" & ",group" )                      
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TR_ALD_d")                                               
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TR_ALD_d,group" )                            
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TR_ALD_d" & ",group" )                                       
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TR_SITE3_ALD_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TR_SITE3_ALD_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TR_SITE3_ALD_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TR_SITE3_ALL_OGR_d")                                     
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TR_SITE3_ALL_OGR_d,group" )                  
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TR_SITE3_ALL_OGR_d" & ",group" )                             
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TR_SITE3_ALL_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TR_SITE3_ALL_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TR_SITE3_ALL_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TR_SITE3_ZD_d")                                          
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TR_SITE3_ZD_d,group" )                       
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TR_SITE3_ZD_d" & ",group" )                                  
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_TR_SITE3_ZEX_d")                                         
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_TR_SITE3_ZEX_d,group" )                      
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_TR_SITE3_ZEX_d" & ",group" )                                 
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_T_ALD_d")                                                
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_T_ALD_d,group" )                             
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_T_ALD_d" & ",group" )                                        
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              
+Set objUser = colAccounts.Create("group","ora_main_R_ZEX003_SELECT_d")                                        
+objUser.SetInfo                                                                                               
+On Error Resume Next                                                                                          
+Set oGroup = GetObject("WinNT://"  &  strComputer & "/ora_main_R_ZEX003_SELECT_d,group" )                     
+Set oUser = GetObject("WinNT://AD/" &"ora_prog_R_ZEX003_SELECT_d" & ",group" )                                
+oGroup.Add(oUser.ADsPath)                                                                                     
+oUser = null                                                                                                  
+                                                                                                              

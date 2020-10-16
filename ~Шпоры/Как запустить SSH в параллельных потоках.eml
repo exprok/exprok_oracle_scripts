@@ -1,0 +1,84 @@
+Return-Path: <m.fedenev@sigma-it.ru>
+X-Original-To: aprokudin@sigma-it.ru
+Delivered-To: aprokudin@sigma-it.ru
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.sigma-it.ru (Postfix) with ESMTP id EB078180005E
+	for <aprokudin@sigma-it.ru>; Thu,  1 Nov 2018 12:12:53 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at sigma-it.ru
+Received: from mail.sigma-it.ru ([127.0.0.1])
+	by localhost (mail.sigma-it.ru [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id fB7JlBFXbgVp for <aprokudin@sigma-it.ru>;
+	Thu,  1 Nov 2018 12:12:53 +0300 (MSK)
+Received: from [10.196.6.141] (unknown [10.196.6.141])
+	(Authenticated sender: mfedenev)
+	by mail.sigma-it.ru (Postfix) with ESMTPSA id C2C441800060
+	for <a.prokudin@sigma-it.ru>; Thu,  1 Nov 2018 12:12:53 +0300 (MSK)
+To: =?UTF-8?B?0J/RgNC+0LrRg9C00LjQvSDQkNC70LXQutGB0LDQvdC00YAg0JLQuNC60YI=?=
+ =?UTF-8?B?0L7RgNC+0LLQuNGH?= <a.prokudin@sigma-it.ru>
+From: =?UTF-8?B?0KTQtdC00LXQvdC10LIg0JzQsNC60YHQuNC8INCS0LjQutGC0L7RgNC+0LI=?=
+ =?UTF-8?B?0LjRhw==?= <m.fedenev@sigma-it.ru>
+Subject: =?UTF-8?B?0JrQsNC6INC30LDQv9GD0YHRgtC40YLRjCBTU0gg0LIg0L/QsNGA0LA=?=
+ =?UTF-8?B?0LvQu9C10LvRjNC90YvRhSDQv9C+0YLQvtC60LDRhQ==?=
+Message-ID: <533a788e-7af5-b112-15e3-7eb717365412@sigma-it.ru>
+Date: Thu, 1 Nov 2018 12:12:53 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="------------2443A17F9E3F58DCE121ECC0"
+Content-Language: ru
+
+This is a multi-part message in MIME format.
+--------------2443A17F9E3F58DCE121ECC0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+При копировании десятков файлов по SSH можно вот таким образом 
+использовать под шифрование не 1 ядро, а 5 .. 10 ядер:
+
+cat filelist | xargs -I replaceme _*-P 5*_ scp -i ~/bin/id_rsa -c 
+arcfour256 -P 20322 replaceme 
+root@oraci2.sigma-it.local:/u02/oradata/backup/
+
+Нужно иметь ключ без пассфразы (здесь ~/bin/id_rsa) или поставить и 
+настроить ssh-askpass.
+
+-P 5 в xargs - число потоков.
+
+-- 
+С уважением,
+Максим Феденев
+ведущий инженер отдела системной интеграции OOO "Сигма"
+195009, г. Санкт-Петербург, Свердловская наб., д. 4 лит Б, оф. 216
+тел.:  +7 812 602-2772 (доб. 215), факс: +7 812 602 2770
+
+
+--------------2443A17F9E3F58DCE121ECC0
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <p>При копировании десятков файлов по SSH можно вот таким образом
+      использовать под шифрование не 1 ядро, а 5 .. 10 ядер:</p>
+    <p>cat filelist | xargs -I replaceme <u><b>-P 5</b></u> scp -i
+      ~/bin/id_rsa -c arcfour256 -P 20322 replaceme
+      <a class="moz-txt-link-abbreviated" href="mailto:root@oraci2.sigma-it.local:/u02/oradata/backup/">root@oraci2.sigma-it.local:/u02/oradata/backup/</a></p>
+    <p>Нужно иметь ключ без пассфразы (здесь ~/bin/id_rsa) или поставить
+      и настроить ssh-askpass.</p>
+    <p>-P 5 в xargs - число потоков.<br>
+    </p>
+    <pre class="moz-signature" cols="72">-- 
+С уважением,
+Максим Феденев
+ведущий инженер отдела системной интеграции OOO "Сигма"
+195009, г. Санкт-Петербург, Свердловская наб., д. 4 лит Б, оф. 216
+тел.:  +7 812 602-2772 (доб. 215), факс: +7 812 602 2770</pre>
+  </body>
+</html>
+
+--------------2443A17F9E3F58DCE121ECC0--

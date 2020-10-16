@@ -1,0 +1,4 @@
+select t.OS_version,count(*) from w_admin_every_day.pc_status_in_ad t
+group by t.OS_version
+union all 
+select 'All',count(*) from w_admin_every_day.pc_status_in_ad t

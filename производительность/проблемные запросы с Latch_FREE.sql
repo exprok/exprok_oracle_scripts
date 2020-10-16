@@ -1,0 +1,15 @@
+select  sa.SQL_TEXT, sa.EXECUTIONS from v$sqlarea sa where sa.ADDRESS in(
+select distinct address
+  from v$sql_plan sp
+ where sp.OBJECT_OWNER || '.' || sp.OBJECT_NAME in
+	 (select distinct o.owner || '.' || o.object_name ---, avg( b.tch)  --b.tim, b.class, b.tch, o.owner || '.' || o.object_name, b.*
+	    from x$bh b, dba_objects o, v$latch_children l
+	   where b.obj = o.data_object_id
+	     and owner not in ('SYS', 'SYSTEM')
+	     and b.hladdr = l.addr
+	     and l.name = 'cache buffers chains'
+	     and b.TCH>1000)          
+	     and sp.OPTIONS<>'UNIQUE SCAN'     
+	     and sp.OPTIONS<>'BY INDEX ROWID')
+order by 2 desc	     
+	     

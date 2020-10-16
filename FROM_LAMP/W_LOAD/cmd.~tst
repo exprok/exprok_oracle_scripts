@@ -1,0 +1,9 @@
+PL/SQL Developer Test script 3.0
+6
+begin
+  -- Call the procedure
+  dbms_java.set_output(10000);
+  tools_cu.run_os_cmd('d:\winnt\system32\cmd.exe /c dir d:\');
+  tools_cu.run_os_cmd('d:\winnt\system32\cmd.exe /c dir d:\prog');
+end;
+0

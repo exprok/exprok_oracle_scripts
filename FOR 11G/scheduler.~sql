@@ -1,0 +1,110 @@
+
+
+begin
+--     dbms_scheduler.drop_job_class(job_class_name => 'SchedClass');
+     dbms_scheduler.create_job_class(job_class_name => 'SchedClass', resource_consumer_group => 'SCHEDULER_GROUPS',logging_level => DBMS_SCHEDULER.LOGGING_FULL);
+end;
+
+
+/*begin
+  dbms_scheduler.add_window_group_member(group_name => 'MAINTENANCE_WINDOW_GROUP',window_list => 'WIN_NIGHT');
+end;*/
+
+/*begin
+     dbms_scheduler.create_window(window_name => 'WIN_WEEKEND',
+                                  resource_plan => 'P_WEEKEND',
+                                  schedule_name => 'SCHED_WEEKEND',
+                                  duration => '+000 14:00:00',
+                                  window_priority => 'HIGH',
+                                  comments => 'WEEKEND''S WINDOW');
+  
+end;
+*/
+
+/*begin
+    dbms_scheduler.open_window(window_name => 'WIN_DAY',duration => '+000 07:34:00' );
+end;*/
+
+/*begin
+     dbms_scheduler.create_window(window_name => 'WIN_DAY',
+                                  resource_plan => 'P_DAY',
+                                  schedule_name => 'SCHED_DAY',
+                                  duration => '+000 14:00:00',
+                                  window_priority => 'HIGH',
+                                  comments => 'DAY''S WINDOW');
+  
+end;*/
+
+
+
+/*begin
+   dbms_scheduler.create_schedule(schedule_name => 'SCHED_DAY',
+                                  start_date => '31.08.10 06:00:00,000000 +04:00',
+                                  repeat_interval => 'FREQ=DAILY; BYDAY=MON,TUE,WED,THU,FRI',comments => 'DAYLY''S WORK');
+    
+   dbms_scheduler.create_schedule(schedule_name => 'SCHED_NIGHT',
+                                  start_date => '31.08.10 20:00:00,000000 +04:00',
+                                  repeat_interval => 'FREQ=DAILY',comments => 'DAYLY''S WORK');
+
+   dbms_scheduler.create_schedule(schedule_name => 'SCHED_WEEKEND',
+                                  start_date => '31.08.10 06:00:00,000000 +04:00',
+                                  repeat_interval => 'FREQ=DAILY; BYDAY=SAT,SUN',comments => 'DAYLY''S WORK');
+end;*/
+
+
+
+
+
+
+/*begin
+  dbms_scheduler.create_window(window_name => 'MY_WIN_TRUE',resource_plan => 'MY_PLAN',
+                                           schedule_name => 'ADMIN.SCHED2',duration => '+000 00:05:00'
+                                           );
+end;*/
+/*begin
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN1', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN2', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN3', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN4', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN5', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN6', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN7', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN8', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN9', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN10', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN11', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+  dbms_scheduler.create_job(job_name      => 'MY_JOB_WIN12', program_name  => 'MY_PROG', schedule_name => 'sys.MY_WIN2', 
+                            enabled       => true, job_class     => 'MY_CLASS');
+end;
+
+
+
+admin.p_test_create_job
+
+begin
+  dbms_scheduler.drop_job(job_name => 'D140PROKUDIN.PROK_JOB');
+ 
+end;
+
+\*begin
+  dbms_scheduler.drop_window(window_name => 'MY_WIN_TRUE');
+end;
+*\ \*begin
+  dbms_scheduler.enable(name => 'MY_WIN_TRUE');
+end;*\
+
+begin
+   dbms_scheduler.drop_program('MY_prog');
+end;
+*/

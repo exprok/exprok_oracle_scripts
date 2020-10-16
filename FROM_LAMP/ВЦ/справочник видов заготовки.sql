@@ -1,0 +1,1 @@
+select * from W_VIDZAG.TB_VID_ZAG

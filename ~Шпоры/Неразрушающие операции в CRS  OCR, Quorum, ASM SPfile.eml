@@ -1,0 +1,394 @@
+Return-Path: <m.fedenev@sigma-it.ru>
+X-Original-To: aprokudin@sigma-it.ru
+Delivered-To: aprokudin@sigma-it.ru
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.sigma-it.ru (Postfix) with ESMTP id 7C4C0300008C;
+	Wed, 27 Dec 2017 16:19:00 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at sigma-it.ru
+Received: from mail.sigma-it.ru ([127.0.0.1])
+	by localhost (mail.sigma-it.ru [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id y3adsBXmqbFi; Wed, 27 Dec 2017 16:19:00 +0300 (MSK)
+Received: from [127.0.0.1] (unknown [10.196.6.141])
+	(Authenticated sender: mfedenev)
+	by mail.sigma-it.ru (Postfix) with ESMTPSA id 50C993000089;
+	Wed, 27 Dec 2017 16:18:59 +0300 (MSK)
+To: =?UTF-8?B?0J/RgNC+0LrRg9C00LjQvSDQkNC70LXQutGB0LDQvdC00YAg0JLQuNC60YI=?=
+ =?UTF-8?B?0L7RgNC+0LLQuNGH?= <a.prokudin@sigma-it.ru>,
+ =?UTF-8?B?0KHRg9GB0L/QuNGG0LjQvSDQodC10YDQs9C10Lkg0JLQuNGC0LDQu9GM0LXQstC4?=
+ =?UTF-8?B?0Yc=?= <s.suspitsin@sigma-it.ru>
+From: =?UTF-8?B?0KTQtdC00LXQvdC10LIg0JzQsNC60YHQuNC8INCS0LjQutGC0L7RgNC+0LI=?=
+ =?UTF-8?B?0LjRhw==?= <m.fedenev@sigma-it.ru>
+Subject: =?UTF-8?B?0J3QtdGA0LDQt9GA0YPRiNCw0Y7RidC40LUg0L7Qv9C10YDQsNGG0Lg=?=
+ =?UTF-8?Q?=d0=b8_=d0=b2_CRS:_OCR=2c_Quorum=2c_ASM_SPfile?=
+Message-ID: <266e0b1b-48df-00ff-bd08-51c9826dd4b9@sigma-it.ru>
+Date: Wed, 27 Dec 2017 16:18:58 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="------------2B40950D2E3F440AEEE86B06"
+Content-Language: ru
+
+This is a multi-part message in MIME format.
+--------------2B40950D2E3F440AEEE86B06
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Операции по служебным областям Clusterware, которыми (теоретически) 
+невозможно сломать кластер и которые мне приходилось реально делать:
+
+1. Запросить расположение копий реестра OCR, сразу проверить их на 
+согласованность. _Делается от root_:
+
+[root@isdb1 ~]# /u01/11.2.0.4/grid/bin/ocrcheck
+Status of Oracle Cluster Registry is as follows :
+          Version                  :          3
+          Total space (kbytes)     :     262120
+          Used space (kbytes)      :       3420
+          Available space (kbytes) :     258700
+          ID                       : 1458681985
+          Device/File Name         :    +DGFAST
+                                     Device/File integrity check succeeded
+          Device/File Name         :    +DGVOTE
+                                     Device/File integrity check succeeded
+          Device/File Name         :    +QUORUM
+                                     Device/File integrity check succeeded
+
+                                     Device/File not configured
+
+                                     Device/File not configured
+
+          Cluster registry integrity check succeeded
+
+          Logical corruption check succeeded
+
+2. Запросить ASM-диск и дисковую группу, на которых располагается 
+кворум, Voting disk. _Делается от grid_:
+
+[grid@isdb1 ~]$ crsctl query css votedisk
+##  STATE    File Universal Id                File Name Disk group
+--  -----    -----------------                --------- ---------
+  1. ONLINE   ab16613c8ab74f9cbfa6af9315d19535 (ORCL:_QUORUM01_) [_DGVOTE_]
+
+3. Узнать, где лежит ASM spfile. От grid:
+
+[grid@isdb1 ~]$ sqlplus '/as sysasm'
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Nov 21 13:33:02 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Real Application Clusters and Automatic Storage Management options
+
+SQL> set pages 300 lines 146
+SQL> show parameter spfile
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- 
+------------------------------
+spfile                               string _+QUORUM_/isdb00-cluster/asmpara
+meterfile/registry.253.8713000
+                                                  11
+
+Результат: ASM SPFILE находится на группе +QUORUM. Это единственная 
+дисковая группа в ASM, которую невозможно удалить никакими средствами 
+без полного перезапуска всего кластера. Можно только заменять диски в ней.
+
+4. Сохранить двоичную копию OCR, помимо автоматически сохраняемых:
+[root@isdb1 ~]# /u01/11.2.0.4/grid/bin/ocrconfig -manualbackup
+isdb1     2017/11/21 13:39:23 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20171121_133923.ocr
+isdb3     2016/12/16 16:21:13 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20161216_162113.ocr
+isdb3     2016/11/16 11:49:37 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20161116_114937.ocr
+isdb1     2015/02/10 14:23:55 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20150210_142355.ocr
+
+5. Просмотреть двоичные копии OCR:
+[root@isdb1 log]# /u01/11.2.0.4/grid/bin/ocrconfig -showbackup
+isdb1     2017/12/27 12:31:35 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup00.ocr
+isdb1     2017/12/27 08:31:34 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup01.ocr
+isdb1     2017/12/27 04:31:34 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup02.ocr
+isdb1     2017/12/25 16:31:28 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/day.ocr
+isdb1     2017/12/14 12:30:44 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/week.ocr
+isdb1     2017/11/21 13:39:23 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20171121_133923.ocr
+isdb3     2016/12/16 16:21:13 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20161216_162113.ocr
+isdb3     2016/11/16 11:49:37 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20161116_114937.ocr
+isdb1     2015/02/10 14:23:55 
+/u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20150210_142355.ocr
+
+6. Заменить кворум и переместить копию OCR одновременно:
+old disks: ISDB-QUORUM1 (QUORUM01),  ISDB-QUORUM2 (QUORUM02)
+new disks: ISDB_QUORUM_1 (QUORUM_1), ISDB_QUORUM_2 (QUORUM_2)
+
+alter diskgroup DGVOTE add disk 'ORCL:QUORUM_1' rebalance power 0 NOWAIT;
+alter diskgroup DGVOTE add disk 'ORCL:QUORUM_2' rebalance power 0 NOWAIT;
+alter diskgroup DGVOTE rebalance power 2 wait;
+alter diskgroup DGVOTE drop disk QUORUM01 rebalance power 0 NOWAIT;
+alter diskgroup DGVOTE drop disk QUORUM02 rebalance power 0 NOWAIT;
+alter diskgroup DGVOTE rebalance power 2 wait;
+
+Проверка после этого должна показать:
+[root@isdb1 ~]# /u01/11.2.0.4/grid/bin/ocrcheck
+Status of Oracle Cluster Registry is as follows :
+          Version                  :          3
+          Total space (kbytes)     :     262120
+          Used space (kbytes)      :       3440
+          Available space (kbytes) :     258680
+          ID                       : 1458681985
+          Device/File Name         :    +DGFAST
+                                     Device/File integrity check succeeded
+          Device/File Name         : _*+DGVOTE*_
+                                     Device/File integrity check succeeded
+          Device/File Name         :    +QUORUM
+                                     Device/File integrity check succeeded
+
+                                     Device/File not configured
+
+                                     Device/File not configured
+
+          Cluster registry integrity check succeeded
+
+          Logical corruption check succeeded
+
+[grid@isdb1 ~]$ crsctl query css votedisk
+##  STATE    File Universal Id                File Name Disk group
+--  -----    -----------------                --------- ---------
+  1. ONLINE   6ca5f2b33d0c4f78bf24bb050952b496 (ORCL:_*QUORUM_1*_) [DGVOTE]
+Located 1 voting disk(s).
+
+[grid@isdb1 ~]$ asmcmd lsdsk -p -G _*DGVOTE*_
+Group_Num  Disk_Num      Incarn  Mount_Stat Header_Stat  Mode_Stat  
+State   Path
+         3         2  3915949430  CACHED MEMBER       ONLINE     NORMAL  
+ORCL:_*QUORUM_1*_
+         3         3  3915949431  CACHED MEMBER       ONLINE     NORMAL  
+ORCL:QUORUM_2
+
+При удалении старого кворума новый кандидат перевыбирается из дисков 
+сконфигурированной дисковой группы, как видно в примере, автоматически.
+
+Если кворум нужно выбрать в другой дисковой группе, то следует сделать 
+crsctl replace votedisk. crsctl add | delete votedisk не сработают, 
+поскольку кворум уже находится на ASM, а не в файловой системе (doc: 
+https://docs.oracle.com/cd/E11882_01/rac.112/e41959/votocr.htm#CWADD90962).
+
+-- 
+С уважением,
+Максим Феденев
+Ведущий инженер департамента системной интеграции
+OOO "СИГМА"
+тел.  +7 812 602-2772 (доб.215)
+факс: +7 812 602 2770
+
+
+--------------2B40950D2E3F440AEEE86B06
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <p>Операции по служебным областям Clusterware, которыми
+      (теоретически) невозможно сломать кластер и которые мне
+      приходилось реально делать:<br>
+    </p>
+    <p>1. Запросить расположение копий реестра OCR, сразу проверить их
+      на согласованность. <u>Делается от root</u>:<br>
+    </p>
+    <p><font size="-1"><tt>[root@isdb1 ~]#
+          /u01/11.2.0.4/grid/bin/ocrcheck</tt><tt><br>
+        </tt><tt>Status of Oracle Cluster Registry is as follows :</tt><tt><br>
+        </tt><tt>         Version                  :          3</tt><tt><br>
+        </tt><tt>         Total space (kbytes)     :     262120</tt><tt><br>
+        </tt><tt>         Used space (kbytes)      :       3420</tt><tt><br>
+        </tt><tt>         Available space (kbytes) :     258700</tt><tt><br>
+        </tt><tt>         ID                       : 1458681985</tt><tt><br>
+        </tt><tt>         Device/File Name         :    +DGFAST</tt><tt><br>
+        </tt><tt>                                    Device/File
+          integrity check succeeded</tt><tt><br>
+        </tt><tt>         Device/File Name         :    +DGVOTE</tt><tt><br>
+        </tt><tt>                                    Device/File
+          integrity check succeeded</tt><tt><br>
+        </tt><tt>         Device/File Name         :    +QUORUM</tt><tt><br>
+        </tt><tt>                                    Device/File
+          integrity check succeeded</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>                                    Device/File not
+          configured</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>                                    Device/File not
+          configured</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>         Cluster registry integrity check succeeded</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>         Logical corruption check succeeded</tt></font></p>
+    <p>2. Запросить ASM-диск и дисковую группу, на которых располагается
+      кворум, Voting disk. <u>Делается от grid</u>:<br>
+    </p>
+    <p><font size="-1"><tt>[grid@isdb1 ~]$ crsctl query css votedisk</tt><tt><br>
+        </tt><tt>##  STATE    File Universal Id                File Name
+          Disk group</tt><tt><br>
+        </tt><tt>--  -----    -----------------                ---------
+          ---------</tt><tt><br>
+        </tt><tt> 1. ONLINE   ab16613c8ab74f9cbfa6af9315d19535 (ORCL:<u>QUORUM01</u>)
+          [<u>DGVOTE</u>]</tt></font></p>
+    <p>3. Узнать, где лежит ASM spfile. От grid:</p>
+    <p><font size="-1"><tt>[grid@isdb1 ~]$ sqlplus '/as sysasm'</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>SQL*Plus: Release 11.2.0.4.0 Production on Tue Nov 21
+          13:33:02 2017</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>Copyright (c) 1982, 2013, Oracle.  All rights reserved.</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>Connected to:</tt><tt><br>
+        </tt><tt>Oracle Database 11g Enterprise Edition Release
+          11.2.0.4.0 - 64bit Production</tt><tt><br>
+        </tt><tt>With the Real Application Clusters and Automatic
+          Storage Management options</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>SQL&gt; set pages 300 lines 146</tt><tt><br>
+        </tt><tt>SQL&gt; show parameter spfile</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>NAME                                 TYPE        VALUE</tt><tt><br>
+        </tt><tt>------------------------------------ -----------
+          ------------------------------</tt><tt><br>
+        </tt><tt>spfile                               string      <u>+QUORUM</u>/isdb00-cluster/asmpara</tt><tt><br>
+        </tt><tt>                                                
+          meterfile/registry.253.8713000</tt><tt><br>
+        </tt><tt>                                                 11</tt></font><br>
+      <br>
+      Результат: ASM SPFILE находится на группе +QUORUM. Это
+      единственная дисковая группа в ASM, которую невозможно удалить
+      никакими средствами без полного перезапуска всего кластера. Можно
+      только заменять диски в ней.<br>
+    </p>
+    <p>4. Сохранить двоичную копию OCR, помимо автоматически
+      сохраняемых:<br>
+      <font size="-1"><tt>[root@isdb1 ~]#
+          /u01/11.2.0.4/grid/bin/ocrconfig -manualbackup</tt><tt><br>
+        </tt><tt>isdb1     2017/11/21 13:39:23    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20171121_133923.ocr</tt><tt><br>
+        </tt><tt>isdb3     2016/12/16 16:21:13    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20161216_162113.ocr</tt><tt><br>
+        </tt><tt>isdb3     2016/11/16 11:49:37    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20161116_114937.ocr</tt><tt><br>
+        </tt><tt>isdb1     2015/02/10 14:23:55    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20150210_142355.ocr</tt></font></p>
+    <p>5. Просмотреть двоичные копии OCR:<br>
+      <font size="-1"><tt>[root@isdb1 log]#
+          /u01/11.2.0.4/grid/bin/ocrconfig -showbackup</tt><tt><br>
+        </tt><tt>isdb1     2017/12/27 12:31:35    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup00.ocr</tt><tt><br>
+        </tt><tt>isdb1     2017/12/27 08:31:34    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup01.ocr</tt><tt><br>
+        </tt><tt>isdb1     2017/12/27 04:31:34    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup02.ocr</tt><tt><br>
+        </tt><tt>isdb1     2017/12/25 16:31:28    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/day.ocr</tt><tt><br>
+        </tt><tt>isdb1     2017/12/14 12:30:44    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/week.ocr</tt><tt><br>
+        </tt><tt>isdb1     2017/11/21 13:39:23    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20171121_133923.ocr</tt><tt><br>
+        </tt><tt>isdb3     2016/12/16 16:21:13    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20161216_162113.ocr</tt><tt><br>
+        </tt><tt>isdb3     2016/11/16 11:49:37    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20161116_114937.ocr</tt><tt><br>
+        </tt><tt>isdb1     2015/02/10 14:23:55    
+          /u01/11.2.0.4/grid/cdata/isdb00-cluster/backup_20150210_142355.ocr</tt></font></p>
+    <p>6. Заменить кворум и переместить копию OCR одновременно:<br>
+      old disks: ISDB-QUORUM1 (QUORUM01),  ISDB-QUORUM2 (QUORUM02)<br>
+      new disks: ISDB_QUORUM_1 (QUORUM_1), ISDB_QUORUM_2 (QUORUM_2)<br>
+      <br>
+      alter diskgroup DGVOTE add disk 'ORCL:QUORUM_1' rebalance power 0
+      NOWAIT;<br>
+      alter diskgroup DGVOTE add disk 'ORCL:QUORUM_2' rebalance power 0
+      NOWAIT;<br>
+      alter diskgroup DGVOTE rebalance power 2 wait;<br>
+      alter diskgroup DGVOTE drop disk QUORUM01 rebalance power 0
+      NOWAIT;<br>
+      alter diskgroup DGVOTE drop disk QUORUM02 rebalance power 0
+      NOWAIT;<br>
+      alter diskgroup DGVOTE rebalance power 2 wait;</p>
+    <p>Проверка после этого должна показать:<br>
+      <font size="-1"><tt>[root@isdb1 ~]#
+          /u01/11.2.0.4/grid/bin/ocrcheck</tt><tt><br>
+        </tt><tt>Status of Oracle Cluster Registry is as follows :</tt><tt><br>
+        </tt><tt>         Version                  :          3</tt><tt><br>
+        </tt><tt>         Total space (kbytes)     :     262120</tt><tt><br>
+        </tt><tt>         Used space (kbytes)      :       3440</tt><tt><br>
+        </tt><tt>         Available space (kbytes) :     258680</tt><tt><br>
+        </tt><tt>         ID                       : 1458681985</tt><tt><br>
+        </tt><tt>         Device/File Name         :    +DGFAST</tt><tt><br>
+        </tt><tt>                                    Device/File
+          integrity check succeeded</tt><tt><br>
+        </tt><tt>         Device/File Name         :    <u><b>+DGVOTE</b></u></tt><tt><br>
+        </tt><tt>                                    Device/File
+          integrity check succeeded</tt><tt><br>
+        </tt><tt>         Device/File Name         :    +QUORUM</tt><tt><br>
+        </tt><tt>                                    Device/File
+          integrity check succeeded</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>                                    Device/File not
+          configured</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>                                    Device/File not
+          configured</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>         Cluster registry integrity check succeeded</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>         Logical corruption check succeeded</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>[grid@isdb1 ~]$ crsctl query css votedisk</tt><tt><br>
+        </tt><tt>##  STATE    File Universal Id                File Name
+          Disk group</tt><tt><br>
+        </tt><tt>--  -----    -----------------                ---------
+          ---------</tt><tt><br>
+        </tt><tt> 1. ONLINE   6ca5f2b33d0c4f78bf24bb050952b496 (ORCL:<u><b>QUORUM_1</b></u>)
+          [DGVOTE]</tt><tt><br>
+        </tt><tt>Located 1 voting disk(s).</tt><tt><br>
+        </tt><tt><br>
+        </tt><tt>[grid@isdb1 ~]$ asmcmd lsdsk -p -G <u><b>DGVOTE</b></u></tt><tt><br>
+        </tt><tt>Group_Num  Disk_Num      Incarn  Mount_Stat 
+          Header_Stat  Mode_Stat  State   Path</tt><tt><br>
+        </tt><tt>        3         2  3915949430  CACHED     
+          MEMBER       ONLINE     NORMAL  ORCL:<u><b>QUORUM_1</b></u></tt><tt><br>
+        </tt><tt>        3         3  3915949431  CACHED     
+          MEMBER       ONLINE     NORMAL  ORCL:QUORUM_2</tt></font><br>
+      <br>
+      При удалении старого кворума новый кандидат перевыбирается из
+      дисков сконфигурированной дисковой группы, как видно в примере,
+      автоматически.</p>
+    <p>Если кворум нужно выбрать в другой дисковой группе, то следует
+      сделать crsctl replace votedisk. crsctl add | delete votedisk не
+      сработают, поскольку кворум уже находится на ASM, а не в файловой
+      системе (doc:
+<a class="moz-txt-link-freetext" href="https://docs.oracle.com/cd/E11882_01/rac.112/e41959/votocr.htm#CWADD90962">https://docs.oracle.com/cd/E11882_01/rac.112/e41959/votocr.htm#CWADD90962</a>).<br>
+    </p>
+    <pre class="moz-signature" cols="72">-- 
+С уважением,
+Максим Феденев
+Ведущий инженер департамента системной интеграции
+OOO "СИГМА"
+тел.  +7 812 602-2772 (доб.215)
+факс: +7 812 602 2770</pre>
+  </body>
+</html>
+
+--------------2B40950D2E3F440AEEE86B06--

@@ -1,0 +1,2 @@
+select 'grant '||t.privilege||' on '||t.owner||'.'||t.table_name||' to "'||t.grantee||decode(t.grantable,'NO','";','YES','" with grant option;') from dba_tab_privs t where  
+t.owner  in (select username from dba_users where  default_tablespace ='PARUS')

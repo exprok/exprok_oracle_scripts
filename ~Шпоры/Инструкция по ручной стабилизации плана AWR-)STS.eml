@@ -1,0 +1,94 @@
+Return-Path: <m.fedenev@sigma-it.ru>
+X-Original-To: aprokudin@sigma-it.ru
+Delivered-To: aprokudin@sigma-it.ru
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.sigma-it.ru (Postfix) with ESMTP id BE9E33000090;
+	Tue,  6 Feb 2018 16:12:31 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at sigma-it.ru
+Received: from mail.sigma-it.ru ([127.0.0.1])
+	by localhost (mail.sigma-it.ru [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id MoA7UJW5AzwM; Tue,  6 Feb 2018 16:12:31 +0300 (MSK)
+Received: from [127.0.0.1] (unknown [10.196.6.141])
+	(Authenticated sender: mfedenev)
+	by mail.sigma-it.ru (Postfix) with ESMTPSA id 95CB0300008E;
+	Tue,  6 Feb 2018 16:12:31 +0300 (MSK)
+From: =?UTF-8?B?0KTQtdC00LXQvdC10LIg0JzQsNC60YHQuNC8INCS0LjQutGC0L7RgNC+0LI=?=
+ =?UTF-8?B?0LjRhw==?= <m.fedenev@sigma-it.ru>
+Subject: =?UTF-8?B?0JjQvdGB0YLRgNGD0LrRhtC40Y8g0L/QviDRgNGD0YfQvdC+0Lkg0YE=?=
+ =?UTF-8?B?0YLQsNCx0LjQu9C40LfQsNGG0LjQuCDQv9C70LDQvdCwIEFXUi0+U1RT?=
+To: =?UTF-8?B?0KjRg9GI0LjQvSDQodC10YDQs9C10Lkg0JDQvdC00YDQtdC10LLQuNGH?=
+ <s.shushin@sigma-it.ru>,
+ =?UTF-8?B?0J/QtdGH0LXRgNGB0LrQuNC5INCU0LzQuNGC0YDQuNC5INCS0LvQsNC00LjQvNC4?=
+ =?UTF-8?B?0YDQvtCy0LjRhw==?= <d.pecherskiy@sigma-it.ru>
+References: <55B9E22F.5060301@sigma-it.ru>
+Cc: =?UTF-8?B?0J/RgNC+0LrRg9C00LjQvSDQkNC70LXQutGB0LDQvdC00YAg0JLQuNC60YI=?=
+ =?UTF-8?B?0L7RgNC+0LLQuNGH?= <a.prokudin@sigma-it.ru>,
+ =?UTF-8?B?0KHRg9GB0L/QuNGG0LjQvSDQodC10YDQs9C10Lkg0JLQuNGC0LDQu9GM0LXQstC4?=
+ =?UTF-8?B?0Yc=?= <s.suspitsin@sigma-it.ru>
+Message-ID: <e4d70140-58c0-a99e-2b08-7fb80fb0daa2@sigma-it.ru>
+Date: Tue, 6 Feb 2018 16:12:31 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+In-Reply-To: <55B9E22F.5060301@sigma-it.ru>
+Content-Type: multipart/alternative;
+ boundary="------------E04940BFEFD88076CD1FE1E9"
+Content-Language: ru
+
+This is a multi-part message in MIME format.
+--------------E04940BFEFD88076CD1FE1E9
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Доброго дня,
+
+инструкция Стабилизация плана при помощи SQL Plan Baseline 
+<http://jira.sigma-it.ru:8090/pages/viewpage.action?pageId=234684444>, 
+которая детализирует закрепление плана запроса вручную в тех случаях, 
+когда с этим не справляется автоматика, доступна в Confluence по адресу
+
+http://jira.sigma-it.ru:8090/pages/viewpage.action?pageId=234684444
+
+Просьба высказывать замечания и предложения. Можно сразу править.
+
+-- 
+С уважением,
+Максим Феденев
+Ведущий инженер департамента системной интеграции
+OOO "СИГМА"
+тел.  +7 812 602-2772 (доб.215)
+факс: +7 812 602 2770
+
+
+--------------E04940BFEFD88076CD1FE1E9
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Стабилизация планов SQL по кэшу и по AWR</title>
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <p> Доброго дня,</p>
+    <p>инструкция Стабилизация плана при помощи <a
+        moz-do-not-send="true"
+href="http://jira.sigma-it.ru:8090/pages/viewpage.action?pageId=234684444">SQL
+        Plan Baseline</a>, которая детализирует закрепление плана
+      запроса вручную в тех случаях, когда с этим не справляется
+      автоматика, доступна в Confluence по адресу</p>
+    <p><a class="moz-txt-link-freetext" href="http://jira.sigma-it.ru:8090/pages/viewpage.action?pageId=234684444">http://jira.sigma-it.ru:8090/pages/viewpage.action?pageId=234684444</a></p>
+    <p>Просьба высказывать замечания и предложения. Можно сразу править.<br>
+    </p>
+    <pre class="moz-signature" cols="72">-- 
+С уважением,
+Максим Феденев
+Ведущий инженер департамента системной интеграции
+OOO "СИГМА"
+тел.  +7 812 602-2772 (доб.215)
+факс: +7 812 602 2770
+</pre>
+  </body>
+</html>
+
+--------------E04940BFEFD88076CD1FE1E9--

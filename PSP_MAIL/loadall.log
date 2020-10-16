@@ -1,0 +1,48 @@
+PSP_Mail v1.4.5  Copyright(c) 2000-2004 by Hit-Media LLC.
+.........................................................
+Loading functions and packages...
+Creating LICENSE Package and view...
+
+PL/SQL procedure successfully completed.
+
+
+Package created.
+
+
+Package body created.
+
+No errors.
+Trying to upgrade current license...
+License updated.                                                                                                                                                                                        
+
+PL/SQL procedure successfully completed.
+
+
+Package body altered.
+
+Enter your primary DNS server address [192.9.9.3]: 192.168.1.7
+Enter your site name to be used in HELO: main.ora.vz
+Enter your default SMTP server (relay): mail.vz
+Enter default SMTP port [25]: 
+Always relay mail through default SMTP (Y/N)? [N] Y
+Enter offset from GMT in hours [0]: 3
+
+                                                                                                                                                                                                        
+Creating PSP_Mail Package Specification...
+
+Package created.
+
+Creating UTL_B64 Package Specification and Body...
+
+Package created.
+
+
+Package body created.
+
+No errors.
+Creating PSP_Mail Package Body...
+
+Package body created.
+
+No errors.
+Creating UTL_BinFile Package Specification and Body...

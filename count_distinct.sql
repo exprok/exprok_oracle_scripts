@@ -1,0 +1,1 @@
+select count(distinct t.uzak) from w_kts.n3nom t

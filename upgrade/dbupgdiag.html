@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Script-Type" content="text/javascript; charset=UTF-8">
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="/CSP/ui/css/kmstyles_ie7.css?MOS_5.2.1.2.0_GENERIC_110501">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/CSP/ui/css/kmstyles.css?MOS_5.2.1.2.0_GENERIC_110501" target="new">
+<link rel="stylesheet" type="text/css" media="print" href="/CSP/ui/css/kmstyles_print.css?MOS_5.2.1.2.0_GENERIC_110501">
+<style type="text/css">
+<!-- 
+body {font-size: 10pt !important;}
+-->
+</style><script language="JavaScript" type="text/javascript">
+ 
+  var currentContainer = null;
+  var currentLink = null;
+  var sessId = "d605a13395e53bedfbef5ffb8f473167c17d370d55c9618a9e9a6af9a2ba7dbe";
+
+  var expandIcon = "/CSP/ui/images/expand_white.png?MOS_5.2.1.2.0_GENERIC_110501";
+  var collapseIcon = "/CSP/ui/images/collapse_white.png?MOS_5.2.1.2.0_GENERIC_110501";
+  var multipleArticles = false;
+
+  var bugsContent = new Object();
+  //in case of duplicate bug ids, save all bug bodies as fields of bugsContent
+
+  function mosSearch(query)
+  {
+     var error = false;
+    
+     if (parent.mosSearch)
+     {
+       parent.mosSearch(query);
+     }
+     else if (window.opener)
+     {
+       if (window.opener.mosSearch)
+       {
+         window.opener.mosSearch(query);
+         window.close();
+       }
+       else
+       {
+         error = true;
+       }
+     }
+     else
+     {
+       error = true;
+     }  
+    
+     if (error)
+        alert('Unable to run a My Oracle Support search. Please ensure you are viewing this document from within My Oracle Support');
+  }
+
+   function getDocumentDetails() {
+       var docDetails = new Object();
+       docDetails = {category:"KM", docID:"556610.1", docTitle:"Script to Collect DB Upgrade/Migrate Diagnostic Information (dbupgdiag.sql)", docType:"SCRIPT", docDataGroup:"NOT", remarks:"%3Cremarks%3E%0A%3C%2Fremarks%3E%0A"};
+       return docDetails;
+   }
+</script>
+<script language="JavaScript" type="text/javascript" src="/CSP/ui/scripts/kmviewer.js?MOS_5.2.1.2.0_GENERIC_110501"></script>
+</head>
+<body onload="doResize();verifyClickstream();" onresize="doResize();">
+<div id="mainHtmlDocument"><font face="helvetica">
+<P><A name="top"></A></P>
+<BR>
+<TABLE width="100%" border="0" cellpadding="0" cellspacing="6">
+   <TR>
+       <TD ALIGN="left" VALIGN=TOP COLSPAN=6><STRONG>Script to Collect DB Upgrade/Migrate Diagnostic Information (dbupgdiag.sql) [ID 556610.1]</STRONG></TD>
+   </TR>
+   <TR>
+       <TD VALIGN=TOP ALIGN="left" COLSPAN=6><HR size=1/></TD>
+   </TR>   <TR>
+       <TD VALIGN=TOP COLSPAN=2 width="25%">&nbsp;</TD>
+       <TD VALIGN=TOP colspan=3 width="50%" nowrap><em>Modified</em> 20-JAN-2011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Type</em> SCRIPT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Status</em> PUBLISHED</TD>
+       <TD VALIGN=TOP>&nbsp;</TD>
+   </TR>
+</TABLE>
+</font>
+<p><B>In this Document</B><br><font size=-1>
+&nbsp;&nbsp;<A HREF=#PURPOSE>Purpose</A><br>
+&nbsp;&nbsp;<A HREF=#SWREQS>Software Requirements/Prerequisites</A><br>
+&nbsp;&nbsp;<A HREF=#CONFIG>Configuring the Script</A><br>
+&nbsp;&nbsp;<A HREF=#RUNSTEPS>Running the Script</A><br>
+&nbsp;&nbsp;<A HREF=#ADDINFO><em>Caution</em></A><br>
+&nbsp;&nbsp;<A HREF=#CODE>Script</A><br>
+&nbsp;&nbsp;<A HREF=#OUTPUT>Script Output</A><br>
+&nbsp;&nbsp;<A HREF=#REF>References</A><br>
+</font><hr size=1><p>
+<p>
+<H2 class=km>Applies to: </H2> 
+Oracle Server - Enterprise Edition - Version: 9.2.0.1 to 11.2.0.1 - Release: 9.2 to 11.2<BR>Information in this document applies to any platform.<br>
+Oracle Server Enterprise Edition - Version: 9.2.0.1 to 11.2.0.1
+
+
+<H2 class=km><A NAME="PURPOSE"></A>Purpose</H2>
+This script is intended to provide a user friendly output to diagnose the status of the database either before&nbsp;(or) after upgrade.&nbsp;The script will create a file called db_upg_diag_&lt;sid&gt;_&lt;timestamp&gt;.log. <br>
+<H2 class=km><A NAME="SWREQS"></A>Software Requirements/Prerequisites</H2>
+The script needs to be run in SQL*Plus both before the upgrade on the source database and after the upgrade on the upgraded database as SYS user. <br><br>This will help to determine the status of the database before and after upgrade.<br>
+<H2 class=km><A NAME="CONFIG"></A>Configuring the Script</H2>
+Download and save the script as dbupgdiag.sql. The script needs no additional configuration.<br>
+<H2 class=km><A NAME="RUNSTEPS"></A>Running the Script</H2>
+Connect as sysdba and execute the script 
+  
+<div class="kmcodeblock" style="width:95%">cd &lt;location of the script&gt; <br>$ sqlplus / as sysdba<br>sql&gt; alter session set nls_language='American';<br>sql&gt; @dbupgdiag.sql<br>sql&gt; exit</div><br>
+<H2 class=km><A NAME="ADDINFO"></A><em>Caution</em></H2>
+<div id='scriptDescr' class='OraTipText'><em>This script is provided for 
+educational purposes only and not supported by Oracle Support Services. It has been 
+tested internally, however, and works as documented. We do not guarantee that it 
+will work for you, so be sure to test it in your environment before relying on it.<p> 
+Proofread this script before using it! Due to the differences in the way 
+text editors, e-mail packages and operating systems handle text formatting 
+(spaces, tabs and carriage returns), this script may not be in an 
+executable state when you first receive it. Check over the script to 
+ensure that errors of this type are corrected.</em></div>
+<H2 class=km><A NAME="CODE"></A>Script</H2>
+Download the script from <a title="dbupgdiag.sql" href="/CSP/main/article?cmd=show&type=ATT&id=556610.1:DBUPGDIAG">here</a> <br><br>Execute the script before and after upgrade and provide the resultant log files to Oracle Support for analysis purposes.<br>
+<H2 class=km><A NAME="OUTPUT"></A>Script Output</H2>
+<div class="kmcodeblock" style="width:95%">
+    <pre>SQL&gt; @dbupgdiag.sql </pre>
+    <pre>Enter location for Spooled output as Parameter 1: </pre>
+    <pre>Enter value for 1: /tmp<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</pre>
+    <pre>                          ***&nbsp;Start&nbsp;of&nbsp;LogFile&nbsp;***</pre>
+    <pre>&nbsp;&nbsp;Oracle&nbsp;Database&nbsp;Upgrade&nbsp;Diagnostic&nbsp;Utility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;07-01-2008&nbsp;12:17:30<br><br>...<br>...<br></pre><code class="km">Script output<br>...<br>...<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***&nbsp;End&nbsp;of&nbsp;LogFile&nbsp;***</code> <code class="km"></code>
+    <pre><code class="km"></code></pre>
+    <pre><code class="km"></code></pre><code class="km">Upload&nbsp;db_upg_diag_orcl102_01-Jul-2008_1217.log&nbsp;from&nbsp;&quot;/tmp&quot;&nbsp;directory<br></code>
+  </div><br>To view the Sample log file click <a href="/CSP/main/article?cmd=show&type=ATT&id=556610.1:Sample" target="_blank">here</a>. <br>
+<H2 class=km><A NAME="REF"></A>References</H2>
+<a href='/CSP/main/article?cmd=show&type=NOT&id=1030426.6'>NOTE:1030426.6</a> - How to Clean Up Duplicate Objects Owned by SYS and SYSTEM Schema<br>
+<a href='/CSP/main/article?cmd=show&type=NOT&id=397770.1'>NOTE:397770.1</a> - How to Check if the Oracle JVM is Installed Correctly in the Database<br>
+<a href='/CSP/main/article?cmd=show&type=NOT&id=412271.1'>NOTE:412271.1</a> - ORA-600 [22635] and ORA-600 [KOKEIIX1] Reported While Upgrading Or Patching Databases To 10.2.0.3<br>
+<a href='/CSP/main/article?cmd=show&type=NOT&id=456949.1'>NOTE:456949.1</a> - Script to Check the Status of the JVM within the Database<br>
+<a href='/CSP/main/article?cmd=show&type=NOT&id=579523.1'>NOTE:579523.1</a> - ORA-600 [22635], ORA-600 [KOKEIIX1], ORA-7445 [KOPESIZ] and OCI-21500 [KOXSIHREAD1] Reported While Upgrading To 11.1.0.6 Or 11.1.0.7<br>
+<BR/><TABLE width="100%">
+       <TR>
+           <TD colspan="2">
+               <P>
+                   <IMG id="collapseImg1" alt="Show Attachments" src="/CSP/ui/images/collapse_white.png?MOS_5.2.1.2.0_GENERIC_110501" onclick="toggleVisibility(this.id, 'collapsibleAttachments');" style="cursor: pointer"/>
+                   <B>Attachments</B><BR/>
+                   <DIV id="collapsibleAttachments" style="display: inline; width: 100%">
+                       <HR size=1/>
+                      <TABLE border="0" cellpadding="0" cellspacing="2" style="margin-left: 30px">
+                      <TR>
+   <TD VALIGN=TOP><img src="/CSP/ui/images/filetypes/file_default.gif?MOS_5.2.1.2.0_GENERIC_110501"> <A target="_blank" href="/CSP/main/article?cmd=show&type=ATT&id=556610.1:SAMPLE">Sample logfile generated by dbupdiag.sql</A> (7.3 KB)</TD>
+</TR>
+<TR>
+   <TD VALIGN=TOP><img src="/CSP/ui/images/filetypes/file_default.gif?MOS_5.2.1.2.0_GENERIC_110501"> <A target="_blank" href="/CSP/main/article?cmd=show&type=ATT&id=556610.1:DBUPGDIAG">Script to Collect DB Upgrade/Migrate Diagnostic Information</A> (13.28 KB)</TD>
+</TR>
+</TABLE>
+                   </DIV>
+               </P>
+           </TD>
+       </TR>
+</TABLE><TABLE width="100%">
+   <TR>
+       <TD colspan="2">
+	    <P>
+	    <IMG id="collapseImg2" alt="Show Related Information" src="/CSP/ui/images/collapse_white.png?MOS_5.2.1.2.0_GENERIC_110501" onclick="toggleVisibility(this.id, 'collapsibleRelatedData');" style="cursor: pointer"/>
+	    <B>Related</B><BR/>
+	    <DIV id="collapsibleRelatedData" style="margin-left: 20px; display: inline; width: 100%">
+               <HR size=1/>
+	        <B style="margin-left: 20px;">Products</B>
+	        <HR size=1 style="margin-left: 20px;"/>
+               <UL><LI>
+Oracle Database Products > Oracle Database > Oracle Database > Oracle Server - Enterprise Edition
+</LI>
+</UL>
+                              <B style="margin-left: 20px;">Errors</B>
+               <HR size=1 style="margin-left: 20px;"/>
+               <TABLE border="0" cellpadding="0" cellspacing="2" style="margin-left: 30px">
+               <TR>
+<TD VALIGN=TOP>ORA-7445[KOPESIZ]; ORA-600[KOKEIIX1]; ORA-600[22635]; ORA-7445; OCI-21500</TD>
+</TR>
+</TABLE>
+	    </DIV>
+	    <BR/>
+           </P>
+       </TD>
+   </TR>
+</TABLE>
+<P><A href="#top"><IMG border="0" id="backToTopImg" alt="Back to top" src="/CSP/ui/images/top_white.png?MOS_5.2.1.2.0_GENERIC_110501"/>Back to top</A></P>
+<div class="legalnote">Copyright (c) 2007, 2010, Oracle. All rights reserved.      Legal Notices and Terms of Use | Privacy Statement </div></div><div id="feedbackBottomLeft"><a href="javascript:displayFeedbackBox()" class="link">Rate this document&nbsp;<img src="/CSP/ui/images/rate_article_ovr_16.png?MOS_5.2.1.2.0_GENERIC_110501" border="0"></a></div>
+<div id="feedbackBox"  style="position:absolute;background-color:#fffeed;display:none;">
+       <form name="feedback">
+       <input type="hidden" id="articleId" name="articleId" value="556610.1">
+       <input type="hidden" id="feedBackText" name="feedBackText" value="Thank you for your feedback. Please help us to improve our content; comments are required when selecting a rating of &quot;Poor&quot; or &quot;Not Easy&quot; to find. ">
+       <input type="hidden" id="initialCommentText" name="initialCommentText" value="Provide feedback for this article. Please use 'Contact Us' for other feedback.">
+       <table width="100%" height="100%" border="0" class="tables">
+               <tr><td width="100%" height="100%" valign="top" class="tables">
+                               <div style="font-size:12px;font-weight:bold;color:#364a8d">Article Rating </div>
+                               <table  border="0" width="240px">
+                                       <tr><td style="font-size:12px;font-weight:bold;" >Rate this document</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="rating" name="rating" value="3" onClick="questionAnswered()">Excellent</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="rating" name="rating" value="2" onClick="questionAnswered()">Good</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="rating" name="rating" value="1" onClick="questionAnswered()">Poor</td></tr>
+                                       <tr><td width="100%" class="horizontalLine"></td></tr>
+                                       <tr><td width="100%" style="font-size:12px;font-weight:bold;" >Did this document help you?</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="relevancy" name="relevancy" value="3" onClick="questionAnswered()">Yes</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="relevancy" name="relevancy" value="2" onClick="questionAnswered()">No</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="relevancy" name="relevancy" value="1" onClick="questionAnswered()">Just browsing</td></tr>
+                                       <tr><td width="100%" class="horizontalLine"></td></tr>
+                                       <tr><td width="100%" style="font-size:12px;font-weight:bold;" >How easy was it to find this document?</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="easeOfUse" name="easeOfUse" value="3" onClick="questionAnswered()">Very easy</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="easeOfUse" name="easeOfUse" value="2" onClick="questionAnswered()">Somewhat easy</td></tr>
+                                       <tr><td style="font-size:12px;"><input type="radio" id="easeOfUse" name="easeOfUse" value="1" onClick="questionAnswered()">Not easy</td></tr>
+                               </table>
+                       </td>
+                       <td class="verticalLine"></td>
+                       <td width="100%" height="100%" valign="top">
+                               <div style="font-size:12px;font-weight:bold;color:#364a8d">Comments</div>
+                               <textarea style="font-size:12px;color:black" rows="14" cols="70" height="100%" width="100%" class="labelTextareaEmpty" id="commentsInput" name="commentsInput" onFocus="activateBox(this)" onKeyUp="enableSubmit()">Provide feedback for this article. Please use 'Contact Us' for other feedback.</textarea>
+                               <p style="font-size:12px;"><b>Important Note:</b> this feedback may be anonymously visible to other customers until processed by Oracle Support.</p>
+               </td></tr>
+               <tr><td colspan="3" width="100%" class="horizontalLine"></td></tr>
+               <tr><td colspan="3" width="100%">
+                               <table><tr>
+                                               <td align="left"><a href="javascript:cancelFeedbackBox()" style="font-size:12px;">Cancel</a></td><td width="99%"></td>
+                                               <td align="right"><input type="button" id="submitBtn" name="submitBtn" style="font-size:12px;" value="Send Rating" disabled="disabled" onclick="submitFeedback()"></td>
+                               </tr></table>
+               </td></tr>
+       </table>
+</form>
+</div>
+<script>
+var rateArticleSuccess = "Your rating was sent to Oracle";
+var rateArticleFailure = "Unable to Rate Document";
+checkArticleRatingStatus();
+</script>
+
+</body>
+</html><!--<EMMOS_CONTEXT_STRING><RICTXXMLSTR><ARTICLE><ID>556610.1</ID><context  id = "556610.1" doc_type = "SCRIPT" title = "Script to Collect DB Upgrade&#47;Migrate Diagnostic Information (dbupgdiag.sql)" type = "NOT" /></ARTICLE></RICTXXMLSTR></EMMOS_CONTEXT_STRING>-->
+<!--{{FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}}-->

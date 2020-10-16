@@ -1,0 +1,7 @@
+-- кто сколько занимает в темпе
+ select sum(t.BLOCKS * 8192)/(1024*1024) занято_мегабайт, username кто_занял
+ from v$tempseg_usage t -- where t.USERNAME like '%OPT%'
+ group by "USERNAME"
+ union
+ select sum(BLOCKS * 8192)/(1024*1024), 'ВСЕГО'
+ from v$tempseg_usage   

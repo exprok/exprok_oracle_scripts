@@ -1,0 +1,13 @@
+select cs.account_per_id,
+       ct.terra_name,
+       cs.calc_session_date_b date_begin,
+       cs.calc_session_date_e date_end,
+       round((cs.calc_session_date_e - cs.calc_session_date_b) * 24,2) hours,
+       cs.actual_point_calculated,
+       round(cs.actual_point_calculated / ((cs.calc_session_date_e - cs.calc_session_date_b)*24*3600), 2) speed
+  from calc_session cs, c_terra ct
+ where 
+    ct.terra_id=cs.terra_id and
+    cs.calc_type <> 0
+   and trunc(cs.calc_session_date_b) >= to_date('25.09.2017', 'DD.MM.YYYY')
+order by account_per_id, (cs.calc_session_date_e - cs.calc_session_date_b) desc 

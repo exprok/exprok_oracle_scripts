@@ -1,0 +1,2 @@
+select * from sys.optstat_hist_control$;
+select * from sys.optstat_user_prefs$

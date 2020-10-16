@@ -1,0 +1,20 @@
+SELECT v11.*
+  FROM (SELECT v1.*, v2.zak
+           FROM (SELECT vv.*, s.dce, s.naim
+                    FROM (SELECT v.kdce, COUNT(*) count_KPP
+                             FROM (SELECT DISTINCT n.kdce, n.zak
+                                      FROM w_kts.n3pri n) v
+                            GROUP BY v.kdce) vv, w_kts.n3spr s
+                   WHERE vv.kdce = s.kdce) v1,
+                (SELECT DISTINCT pri.kdce, pri.zak FROM w_kts.n3pri pri) v2
+          WHERE v1.kdce = v2.kdce) v11,
+       
+       (SELECT DISTINCT pri.zak
+           FROM w_kts.n3pri pri
+         MINUS
+         SELECT DISTINCT shi.kpp
+           FROM w_kts.h1shifr shi
+         MINUS
+         SELECT DISTINCT t.kpp FROM w_uchet.h1kpz06 t) v12
+ WHERE v11.zak = v12.zak
+ order by 2 desc

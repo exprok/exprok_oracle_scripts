@@ -1,0 +1,5 @@
+ALTER SESSION SET NLS_NUMERIC_CHARACTERS = '. ';
+begin
+dbms_stats.gather_schema_stats(ownname=> 'W_KTS' , cascade=> TRUE);
+end;
+/

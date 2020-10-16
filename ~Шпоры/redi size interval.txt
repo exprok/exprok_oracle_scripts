@@ -1,0 +1,14 @@
+-- Difference history -> history
+select min(end_interval_time), max(end_interval_time),
+         (max(global_redo_size) - min(global_redo_size)) / (1024*1024*1024*1024) tbs from
+    (
+      select st.instance_number, st.snap_id, sum(st.value) over(partition by st.snap_id) global_redo_size, sn.end_interval_time
+          from dba_hist_sysstat st, dba_hist_snapshot sn
+          where st.snap_id in
+            (select snap_id from dba_hist_snapshot sn where sn.end_interval_time   > to_date('14.07.2017 19:25:00', 'DD.MM.YYYY HH24:MI:SS')
+                                                        and sn.begin_interval_time < to_date('15.07.2017 12:36:00', 'DD.MM.YYYY HH24:MI:SS'))
+          and st.stat_name = 'redo size'
+          and st.snap_id = sn.snap_id and st.instance_number = sn.instance_number
+       order by snap_id, instance_number
+    )
+  /

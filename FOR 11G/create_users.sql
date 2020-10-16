@@ -1,0 +1,1 @@
+select 'create user ' ||username||'  identified by values '''||PASSWORD||''' default tablespace MATERIAL  temporary tablespace TEMP  profile DEFAULT;' from dba_users where username like 'W%`_%' escape '`'

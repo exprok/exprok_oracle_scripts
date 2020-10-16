@@ -1,0 +1,3 @@
+SELECT OUTPUT
+FROM TABLE (dbms_workload_repository.awr_global_report_html(l_dbid => 2866445624,l_inst_num => '',l_bid => 13887 ,l_eid => 13953));
+

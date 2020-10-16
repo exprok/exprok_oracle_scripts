@@ -1,0 +1,3 @@
+на БД: lsof -p $(pgrep -f "/u01/tomcat8/") -P | grep 1521 | wc -l
+от балансера: lsof -p $(pgrep -f "/u01/tomcat8/") -P | grep 9010 | wc -l
+

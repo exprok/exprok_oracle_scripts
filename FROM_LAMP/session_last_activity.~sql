@@ -1,0 +1,4 @@
+select s.sid, s.username, st.VALUE, to_date('01.01.1970','dd.mm.yyyy')+st.value/(60*60*24) last_activity, sw.NAME
+from v$session s, v$statname sw, v$sesstat st
+where s.USERNAME is not null and s.SID=st.SID and st.STATISTIC#=sw.STATISTIC# and sw.NAME='process last non-idle time'
+order by 3 desc

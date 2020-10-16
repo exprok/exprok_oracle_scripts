@@ -1,0 +1,54 @@
+DROP PUBLIC SYNONYM NN$FOPS$DIR_LIST
+                    *
+ERROR at line 1:
+ORA-01432: public synonym to be dropped does not exist 
+
+
+DROP PUBLIC SYNONYM UTL_BinFile
+                    *
+ERROR at line 1:
+ORA-01432: public synonym to be dropped does not exist 
+
+
+DROP TABLE NN$FOPS$DIR_LIST
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Synonym created.
+
+
+Grant succeeded.
+
+
+Package created.
+
+
+Package body created.
+
+
+Grant succeeded.
+
+
+Synonym created.
+

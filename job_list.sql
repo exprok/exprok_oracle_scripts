@@ -1,0 +1,1 @@
+select * from dba_jobs where dba_jobs.failures<>0 and last_date> to_date('01-03-2009', 'dd-mm-yyyy')

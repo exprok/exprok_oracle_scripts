@@ -1,0 +1,31 @@
+Dropping existing objects...
+drop public synonym PSP_Mail
+                    *
+ERROR at line 1:
+ORA-01432: public synonym to be dropped does not exist 
+
+
+drop public synonym UTL_B64
+                    *
+ERROR at line 1:
+ORA-01432: public synonym to be dropped does not exist 
+
+
+drop public synonym "Base64"
+                    *
+ERROR at line 1:
+ORA-01432: public synonym to be dropped does not exist 
+
+
+drop package PSP_Mail
+*
+ERROR at line 1:
+ORA-04043: object PSP_MAIL does not exist 
+
+
+drop package UTL_B64
+*
+ERROR at line 1:
+ORA-04043: object UTL_B64 does not exist 
+
+
